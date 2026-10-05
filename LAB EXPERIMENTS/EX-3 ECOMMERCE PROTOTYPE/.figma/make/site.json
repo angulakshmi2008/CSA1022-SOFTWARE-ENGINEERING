@@ -1,0 +1,10 @@
+{
+  "description": "Experience a seamless e-commerce journey with a fully interactive mobile app prototype designed for stakeholder feedback, showcasing intuitive navigation and realistic product interactions.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
