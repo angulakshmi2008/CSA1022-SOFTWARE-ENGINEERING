@@ -1,0 +1,88 @@
+@startuml
+title Revised Multi-Region Deployment Architecture (Task 6 Expansion)
+skinparam monochrome true
+skinparam shadowing false
+
+node "Edge Warehouse Nodes (12 Operating Regions)" {
+    artifact "Handheld Scanner: Region US-EAST\n[5,000-Event Bounded Buffer]" as ScannerUS
+    artifact "Handheld Scanner: Region EU-CENTRAL\n[5,000-Event Bounded Buffer]" as ScannerEU
+    artifact "Handheld Scanner: Region APAC-SOUTH\n[5,000-Event Bounded Buffer]" as ScannerAPAC
+}
+
+node "Global Client Layer" {
+    artifact "Customer Storefront Browsers\n[500 Concurrent Synthetic Users]" as CustomerBrowsers
+    artifact "Staff Dashboards (Picker, Support, Finance, Manager)" as StaffBrowsers
+}
+
+node "Enterprise Cloud Cluster (Cost-Optimized Infrastructure)" {
+    node "Routing & Perimeter Tier" {
+        node "Container: nginx-load-balancer" as NginxProxy {
+            artifact "Nginx Reverse Proxy\n- SSL Termination\n- Rate Limiting\n- Round-Robin Balancing" as Nginx
+        }
+    }
+
+    node "Stateless Compute Tier (Horizontally Scaled)" {
+        node "Container: fastapi-replica-1" as API1 {
+            artifact "Modular FastAPI Service\n- Auth & RBAC Middleware\n- Order Command Engine\n- Policy Versioning Engine" as App1
+        }
+        node "Container: fastapi-replica-2" as API2 {
+            artifact "Modular FastAPI Service\n- Auth & RBAC Middleware\n- Order Command Engine\n- Policy Versioning Engine" as App2
+        }
+        node "Container: fastapi-replica-N (Auto-Scaled)" as APIN {
+            artifact "Modular FastAPI Service" as AppN
+        }
+    }
+
+    node "Asynchronous Integration Tier" {
+        node "Container: outbox-worker-pool" as WorkerPool {
+            artifact "Durable Outbox Worker\n- Exponential Backoff\n- Correlation Reconciliation\n- Multi-Carrier Routing" as Worker
+            artifact "Reservation Expiry Daemon\n- 15-Minute Lease Reclamation" as ExpiryDaemon
+        }
+    }
+
+    node "Central Persistence Tier (PostgreSQL 16)" {
+        node "Container: pgbouncer-pool" as Pooler {
+            artifact "PgBouncer Connection Pooler\n[Transaction Pooling]" as PgBouncer
+        }
+        node "Container: postgres-primary" as PrimaryDB {
+            database "Primary PostgreSQL 16 Engine\n[ACID Authority, Unique Constraints,\nRow-Level Locking]" as Postgres
+            storage "Docker Persistent Volume (pgdata)" as Storage
+        }
+        node "Read Model Summary Tables" {
+            artifact "Materialized Sales & Inventory Projections\n[Asynchronously Serves Store Managers]" as ReadModels
+        }
+    }
+}
+
+cloud "External Partner Ecosystem" {
+    node "Payment Gateway Platform" as GatewayCloud
+    node "Regional Courier APIs" as CourierCloud
+}
+
+' Client & Scanner traffic
+CustomerBrowsers --> Nginx : HTTPS (Port 443)
+StaffBrowsers --> Nginx : HTTPS (Port 443)
+ScannerUS ..> Nginx : HTTPS Batch Sync (Reconnected)
+ScannerEU ..> Nginx : HTTPS Batch Sync (Reconnected)
+ScannerAPAC ..> Nginx : HTTPS Batch Sync (Reconnected)
+
+' Proxy Routing
+Nginx --> App1 : Round-Robin HTTP
+Nginx --> App2 : Round-Robin HTTP
+Nginx --> AppN : Round-Robin HTTP
+
+' Database Pooling
+App1 --> PgBouncer : SQL
+App2 --> PgBouncer : SQL
+AppN --> PgBouncer : SQL
+Worker --> PgBouncer : SQL (Poll Outbox)
+ExpiryDaemon --> PgBouncer : SQL (Inspect Leases)
+PgBouncer --> Postgres : Multiplexed Connection Pool
+Postgres --> Storage : Disk I/O
+Postgres ..> ReadModels : Background Aggregates
+
+' External Handshakes
+Worker --> CourierCloud : Outbox Dispatch (Idempotent)
+Worker --> GatewayCloud : Refund Execution (Idempotent)
+GatewayCloud --> Nginx : Signed Callback Webhook
+@enduml

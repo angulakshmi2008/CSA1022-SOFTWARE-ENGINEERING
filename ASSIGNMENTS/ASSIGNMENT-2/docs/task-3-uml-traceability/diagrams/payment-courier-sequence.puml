@@ -1,0 +1,72 @@
+@startuml
+title Sequence Diagram: Payment Callback, Outbox Intent, and Asynchronous Courier Synchronization
+skinparam monochrome true
+skinparam shadowing false
+autonumber
+
+actor "Payment Gateway" as PG
+boundary "API / Callback Handler" as API
+control "Transaction Manager" as TX
+database "PostgreSQL DB" as DB
+entity "Outbox Worker" as Worker
+boundary "Courier API" as Courier
+actor "Customer UI" as UI
+
+== 1. Payment Webhook Callback (Synchronous Boundary) ==
+PG -> API: POST /api/payments/callback\n(Headers: X-Signature, Payload: gateway_id, event_id, order_id, amount)
+activate API
+
+API -> API: Verify HMAC-SHA256 Signature\nand match payment amount with order total
+
+alt Signature Invalid or Amount Mismatch
+    API --> PG: HTTP 401 / 422 (Rejected Callback)
+else Valid Callback
+    API -> TX: Begin Transaction
+    activate TX
+    
+    TX -> DB: INSERT INTO payment_events (gateway_id, event_id, ...)
+    alt Unique Constraint Violation on (gateway_id, event_id)
+        DB --> TX: UniqueKeyError (Duplicate delivery)
+        TX -> DB: Rollback
+        API --> PG: HTTP 200 OK (Idempotent Acknowledgment)
+    else First Delivery
+        TX -> DB: UPDATE orders SET state = 'PAID', paid_at = NOW(), dispatch_due_at = NOW() + 24h
+        TX -> DB: INSERT INTO audit_events (action = 'ORDER_PAID', ...)
+        TX -> DB: INSERT INTO outbox_intents\n(purpose = 'COURIER_DISPATCH', correlation_key = UUID, status = 'PENDING')
+        TX -> DB: Commit Transaction
+        deactivate TX
+        API --> PG: HTTP 200 OK (Payment Recorded)
+    end
+end
+deactivate API
+
+== 2. Customer Reads Status ==
+UI -> API: GET /api/orders/{id}
+API -> DB: SELECT * FROM orders WHERE id = :id AND owner_id = :user_id
+DB --> API: Order State: PAID (Courier Intent: PENDING)
+API --> UI: Display Order Status: "Paid, Preparing for Warehouse Dispatch"
+
+== 3. Outbox Worker Execution (Asynchronous Boundary) ==
+loop Polling Interval (Every 5 seconds)
+    Worker -> DB: SELECT * FROM outbox_intents WHERE status = 'PENDING' LIMIT 10 FOR UPDATE SKIP LOCKED
+    DB --> Worker: Return Pending Intent (intent_id, correlation_key, payload)
+    
+    Worker -> Courier: POST /v1/shipments\n(Payload: order_details, Idempotency-Key: correlation_key)
+    activate Courier
+    
+    alt Scenario A: Courier Success
+        Courier --> Worker: HTTP 201 Created (Tracking Number: CR-987654)
+        Worker -> DB: UPDATE outbox_intents SET status = 'COMPLETED', external_reference = 'CR-987654'
+        Worker -> DB: INSERT INTO audit_events (action = 'COURIER_REGISTERED')
+    else Scenario B: Courier Timeout / 503 Unavailable
+        Courier --> Worker: Timeout or HTTP 503
+        deactivate Courier
+        Worker -> DB: UPDATE outbox_intents SET attempts = attempts + 1, next_retry_at = NOW() + Backoff(attempts)
+        
+        note over Worker, Courier
+          On subsequent retry, Worker queries Courier GET /v1/shipments/{correlation_key}
+          to reconcile state before issuing a duplicate booking.
+        end note
+    end
+end
+@enduml

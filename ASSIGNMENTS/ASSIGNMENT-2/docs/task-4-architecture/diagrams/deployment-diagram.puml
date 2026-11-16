@@ -1,0 +1,61 @@
+@startuml
+title Deployment Diagram - Containerized Infrastructure Environment
+skinparam monochrome true
+skinparam shadowing false
+
+node "Client Devices" {
+    artifact "Desktop / Mobile Web Browser" as Browser
+    artifact "Warehouse Handheld Scanner (Android/Linux)" as ScannerNode
+}
+
+node "Enterprise Cloud Host (Docker Compose Environment)" {
+    node "Docker Network: app-net" {
+        node "Container: nginx-proxy" as NginxCont {
+            artifact "Nginx Reverse Proxy & Static Files" as Nginx
+        }
+
+        node "Container: fastapi-backend-1" as API1 {
+            artifact "Python FastAPI Application (Stateless)" as App1
+        }
+
+        node "Container: fastapi-backend-2 (Replica)" as API2 {
+            artifact "Python FastAPI Application (Stateless)" as App2
+        }
+
+        node "Container: outbox-worker" as WorkerCont {
+            artifact "Asynchronous Outbox Daemon" as WorkerApp
+        }
+
+        node "Container: postgres-db" as DBCont {
+            database "PostgreSQL 16 Engine" as PostgresEngine
+            storage "Named Docker Volume: pgdata" as DBVolume
+        }
+    }
+}
+
+cloud "External SaaS Partners" {
+    node "Payment Gateway Platform" {
+        artifact "Payment & Refund Webhook API" as GatewayExt
+    }
+
+    node "Logistics Partner Platform" {
+        artifact "Courier Booking & Tracking API" as CourierExt
+    }
+}
+
+' Networking
+Browser --> Nginx : HTTPS (Port 443 / 80)
+ScannerNode --> Nginx : HTTPS (Batch Sync API)
+
+Nginx --> App1 : HTTP / Round-Robin (Port 8000)
+Nginx --> App2 : HTTP / Round-Robin (Port 8000)
+
+App1 --> PostgresEngine : TCP / PostgreSQL Connection Pool (Port 5432)
+App2 --> PostgresEngine : TCP / PostgreSQL Connection Pool (Port 5432)
+WorkerApp --> PostgresEngine : TCP / PostgreSQL (Poll Intents)
+PostgresEngine --> DBVolume : Persistent File I/O
+
+WorkerApp --> CourierExt : HTTPS REST (Outbound Shipment Registration)
+WorkerApp --> GatewayExt : HTTPS REST (Outbound Refund Execution)
+GatewayExt --> Nginx : HTTPS POST (Signed Inbound Webhook Callback)
+@enduml

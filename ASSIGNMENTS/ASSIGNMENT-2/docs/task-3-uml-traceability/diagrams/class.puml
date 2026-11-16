@@ -1,0 +1,195 @@
+@startuml
+title Domain Class Diagram - Omnichannel Order Fulfilment Platform
+skinparam classAttributeIconSize 0
+skinparam monochrome true
+skinparam shadowing false
+
+class User {
+    +user_id: UUID
+    +username: String
+    +email: String
+    +hashed_password: String
+    +role: UserRole
+    +region_id: String
+    +is_active: Boolean
+    +created_at: DateTime
+    --
+    +has_permission(permission: String): Boolean
+}
+
+class Product {
+    +sku: String
+    +name: String
+    +description: String
+    +base_price: Decimal
+    +category: String
+    +is_active: Boolean
+}
+
+class StockItem {
+    +sku: String
+    +region_id: String
+    +on_hand: Integer
+    +reserved: Integer
+    +version: Integer
+    --
+    +get_available(): Integer
+    +reserve(qty: Integer): Boolean
+    +release(qty: Integer): void
+}
+
+class Order {
+    +order_id: UUID
+    +owner_id: UUID
+    +state: OrderState
+    +subtotal: Decimal
+    +tax_amount: Decimal
+    +shipping_fee: Decimal
+    +total_amount: Decimal
+    +region_id: String
+    +policy_version: Integer
+    +dispatch_due_at: DateTime
+    +version: Integer
+    +created_at: DateTime
+    +updated_at: DateTime
+    --
+    +transition_to(new_state: OrderState): void
+    +is_owned_by(user_id: UUID): Boolean
+}
+
+class OrderLine {
+    +line_id: UUID
+    +order_id: UUID
+    +sku: String
+    +quantity: Integer
+    +unit_price: Decimal
+    +tax_rate: Decimal
+    +tax_amount: Decimal
+    +line_total: Decimal
+}
+
+class Reservation {
+    +reservation_id: UUID
+    +order_id: UUID
+    +sku: String
+    +quantity: Integer
+    +expires_at: DateTime
+    +status: ReservationStatus
+    --
+    +is_expired(): Boolean
+    +release(): void
+}
+
+class PaymentEvent {
+    +event_pk: UUID
+    +gateway_id: String
+    +event_id: String
+    +order_id: UUID
+    +amount: Decimal
+    +currency: String
+    +signature: String
+    +verified_at: DateTime
+    +status: String
+}
+
+class RefundRequest {
+    +refund_id: UUID
+    +order_id: UUID
+    +amount: Decimal
+    +state: RefundState
+    +reason: String
+    +requested_by: UUID
+    +approved_by: UUID
+    +idempotency_key: String
+    +version: Integer
+    +created_at: DateTime
+    +resolved_at: DateTime
+    --
+    +approve(reviewer_id: UUID): void
+    +reject(reviewer_id: UUID): void
+    +mark_failed(error_msg: String): void
+    +mark_executed(tx_ref: String): void
+}
+
+class IntegrationIntent {
+    +intent_id: UUID
+    +aggregate_id: UUID
+    +purpose: IntentPurpose
+    +correlation_key: String
+    +payload_json: String
+    +status: IntentStatus
+    +attempts: Integer
+    +max_attempts: Integer
+    +next_retry_at: DateTime
+    +external_reference: String
+    +created_at: DateTime
+    --
+    +mark_success(ref: String): void
+    +schedule_retry(backoff_sec: Integer): void
+}
+
+class AuditEvent {
+    +event_id: UUID
+    +actor_id: UUID
+    +action: String
+    +entity_type: String
+    +entity_id: String
+    +old_version: Integer
+    +new_version: Integer
+    +details_json: String
+    +occurred_at: DateTime
+}
+
+class RegionalPolicy {
+    +region_id: String
+    +region_name: String
+    +policy_version: Integer
+    +tax_rate: Decimal
+    +shipping_fee: Decimal
+    +refund_approval_threshold: Decimal
+    +effective_from: DateTime
+    +is_active: Boolean
+}
+
+class ScannerEventLog {
+    +log_id: UUID
+    +node_id: String
+    +event_id: String
+    +sku: String
+    +event_type: String
+    +quantity: Integer
+    +observation_time: DateTime
+    +received_at: DateTime
+    +schema_version: String
+    +is_stale: Boolean
+}
+
+' Relationships
+User "1" *-- "0..*" Order : owns
+Order "1" *-- "1..*" OrderLine : contains
+Product "1" -- "0..*" StockItem : stocked as
+Order "1" -- "0..*" Reservation : holds
+StockItem "1" -- "0..*" Reservation : allocates
+Order "1" -- "0..*" PaymentEvent : receives
+Order "1" -- "0..*" RefundRequest : has
+Order "1" -- "0..*" IntegrationIntent : triggers
+Order "1" -- "0..*" AuditEvent : audits
+RegionalPolicy "1" -- "0..*" Order : governs
+RegionalPolicy "1" -- "0..*" StockItem : applies to
+StockItem "1" -- "0..*" ScannerEventLog : adjusted by
+
+note bottom of PaymentEvent
+  UNIQUE(gateway_id, event_id)
+  guarantees deduplication.
+end note
+
+note bottom of ScannerEventLog
+  UNIQUE(node_id, event_id)
+  prevents edge replay duplicates.
+end note
+
+note bottom of StockItem
+  Constraint:
+  (on_hand - reserved) >= 0
+end note
+@enduml

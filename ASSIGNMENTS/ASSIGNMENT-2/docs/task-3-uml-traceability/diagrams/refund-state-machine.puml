@@ -1,0 +1,48 @@
+@startuml
+title State Machine Diagram: Dual-Control Refund Lifecycle
+skinparam monochrome true
+skinparam shadowing false
+
+[*] --> REQUESTED : Return Accepted / Late Callback\n[Support Agent or System Event]
+
+state REQUESTED {
+    REQUESTED : Amount & order association verified
+    REQUESTED : Awaiting threshold evaluation
+}
+
+REQUESTED --> APPROVED : Policy Auto-Approved\n[Amount <= Threshold ($50.00)]
+REQUESTED --> APPROVED : Finance Reviewer Approves\n[Amount > $50.00, Requester != Approver]
+REQUESTED --> REJECTED : Finance Reviewer Rejects\n[Justification logged in audit trail]
+
+state APPROVED {
+    APPROVED : Financial authorization granted
+    APPROVED : Idempotency key assigned
+}
+
+state REJECTED {
+    REJECTED : Customer notified of rejection
+}
+
+APPROVED --> EXECUTING : Dispatch Refund Command\n[Outbox worker or Finance trigger]
+
+state EXECUTING {
+    EXECUTING : API call in flight to Payment Gateway
+}
+
+EXECUTING --> EXECUTED : Gateway Returns Success\n[Transaction reference recorded]
+EXECUTING --> FAILED : Gateway Returns 5xx / Timeout\n[Approval retained; retry scheduled]
+
+state FAILED {
+    FAILED : Gateway failure reason logged
+    FAILED : Prior approval remains valid
+}
+
+FAILED --> EXECUTING : Controlled Retry\n[Reuses identical idempotency key]
+
+state EXECUTED {
+    EXECUTED : Order updated; customer credited
+}
+
+REJECTED --> [*]
+EXECUTED --> [*]
+@enduml

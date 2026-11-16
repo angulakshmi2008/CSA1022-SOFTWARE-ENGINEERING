@@ -1,0 +1,63 @@
+@startuml
+title State Machine Diagram: Order Lifecycle with Guards
+skinparam monochrome true
+skinparam shadowing false
+
+[*] --> PLACED : Customer Checkout\n[Stock Reserved Atomically, Lease = 15m]
+
+state PLACED {
+    PLACED : subtotal, tax & shipping snapshotted
+    PLACED : 15-minute lease timer active
+}
+
+PLACED --> CANCELLED : Customer Cancels\n[Pre-payment only]
+PLACED --> CANCELLED : Expiry Worker Fires\n[Time > 15m without payment]
+
+state CANCELLED {
+    CANCELLED : Stock reservation released back to pool
+}
+
+PLACED --> PAID : Verified Callback Received\n[Valid HMAC signature & exact amount match]
+PLACED --> NEEDS_REFUND : Late Callback Received\n[Reservation expired & stock no longer available]
+
+state PAID {
+    PAID : Payment record persisted
+    PAID : Dispatch SLA timer active (24h in UTC)
+    PAID : Outbox intent created
+}
+
+PAID --> PACKED : Picker Confirms Pick\n[Assigned picker retrieves all reserved items]
+
+state PACKED {
+    PACKED : Items boxed and barcode verified
+}
+
+PACKED --> DISPATCHED : Dispatch Executed\n[Courier tracking generated & handover logged]
+
+state DISPATCHED {
+    DISPATCHED : In transit with carrier
+}
+
+DISPATCHED --> DELIVERED : Delivery Milestone Confirmed\n[Carrier webhook confirmation]
+
+state DELIVERED {
+    DELIVERED : Customer receipt confirmed
+    DELIVERED : Return window open (14/30 days)
+}
+
+DELIVERED --> RETURN_REQUESTED : Customer or Agent Requests Return\n[Return condition verified]
+DELIVERED --> CLOSED : Return Window Lapses\n[No active returns]
+
+RETURN_REQUESTED --> CLOSED : Return Rejected / Cancelled
+RETURN_REQUESTED --> CLOSED : Refund Executed Successfully
+
+state NEEDS_REFUND {
+    NEEDS_REFUND : Payment captured after stock lost
+    NEEDS_REFUND : Automatic refund request generated
+}
+
+NEEDS_REFUND --> CLOSED : Refund Executed Successfully
+
+CANCELLED --> [*]
+CLOSED --> [*]
+@enduml

@@ -1,0 +1,113 @@
+@startuml
+title Component Diagram - Omnichannel Order Fulfilment Architecture
+skinparam monochrome true
+skinparam shadowing false
+skinparam componentStyle uml2
+
+package "Client Presentation Layer" {
+    [React Storefront & Customer Portal] as CustomerUI
+    [Warehouse Handheld & Picker Dashboard] as PickerUI
+    [Support & Returns Console] as SupportUI
+    [Finance Reviewer Console] as FinanceUI
+    [Manager Analytics Dashboard] as ManagerUI
+    [Administrator Panel] as AdminUI
+}
+
+package "Routing & Perimeter Security" {
+    [Nginx Reverse Proxy & TLS] as Proxy
+}
+
+package "FastAPI Application Core (Modular Monolith)" {
+    [Security & RBAC Middleware] as SecurityModule
+    [Order Command Service] as OrderModule
+    [Inventory & Stock Service] as InventoryModule
+    [Authoritative Pricing Service] as PricingModule
+    [Payment Callback Handler] as PaymentModule
+    [Refund Governance Service] as RefundModule
+    [Warehouse Dispatch Service] as WarehouseModule
+    [Scanner Synchronization Service] as ScannerModule
+    [Regional Policy Engine] as PolicyModule
+    [Consolidated Reporting Service] as ReportingModule
+    [Audit Event Logger] as AuditModule
+}
+
+package "Asynchronous Integration Layer" {
+    [Transactional Outbox Worker] as OutboxWorker
+    [Reservation Expiry Daemon] as ExpiryWorker
+}
+
+database "PostgreSQL Relational Database" as DB {
+    folder "Transactional Tables" {
+        [users & roles] as UsersTable
+        [products & stock_items] as StockTable
+        [orders & order_lines] as OrdersTable
+        [reservations] as ResTable
+        [payment_events] as PayTable
+        [refund_requests] as RefundTable
+        [regional_policies] as PolicyTable
+        [scanner_event_logs] as ScanTable
+        [audit_events] as AuditTable
+    }
+    queue "Transactional Outbox" {
+        [outbox_intents] as OutboxTable
+    }
+}
+
+cloud "External Third-Party Ecosystem" {
+    [Payment Gateway Sandbox] as GatewayAPI
+    [Third-Party Courier API] as CourierAPI
+    [Warehouse Edge Scanners] as ScannerDevices
+}
+
+' Client connections
+CustomerUI --> Proxy : HTTPS / REST
+PickerUI --> Proxy : HTTPS / REST
+SupportUI --> Proxy : HTTPS / REST
+FinanceUI --> Proxy : HTTPS / REST
+ManagerUI --> Proxy : HTTPS / REST
+AdminUI --> Proxy : HTTPS / REST
+ScannerDevices --> Proxy : HTTPS / Batch Sync
+
+' Proxy to Application
+Proxy --> SecurityModule
+SecurityModule --> OrderModule
+SecurityModule --> InventoryModule
+SecurityModule --> PricingModule
+SecurityModule --> PaymentModule
+SecurityModule --> RefundModule
+SecurityModule --> WarehouseModule
+SecurityModule --> ScannerModule
+SecurityModule --> ReportingModule
+SecurityModule --> PolicyModule
+
+' Internal module interactions
+OrderModule ..> InventoryModule : atomic reserve
+OrderModule ..> PricingModule : calculate total
+PaymentModule ..> OrderModule : mark paid
+PaymentModule ..> OutboxTable : insert dispatch intent
+RefundModule ..> OutboxTable : insert refund intent
+ScannerModule ..> InventoryModule : reconcile counts
+OrderModule ..> AuditModule : log state
+RefundModule ..> AuditModule : log approval
+
+' Database persistence
+OrderModule --> OrdersTable : SQL
+InventoryModule --> StockTable : SQL
+InventoryModule --> ResTable : SQL
+PaymentModule --> PayTable : SQL
+RefundModule --> RefundTable : SQL
+PolicyModule --> PolicyTable : SQL
+ScannerModule --> ScanTable : SQL
+ReportingModule --> OrdersTable : Read SQL
+AuditModule --> AuditTable : Append-only SQL
+
+' Outbox and Expiry Workers
+OutboxWorker --> OutboxTable : Poll & Claim (FOR UPDATE SKIP LOCKED)
+OutboxWorker --> CourierAPI : Dispatches shipment (Idempotent)
+OutboxWorker --> GatewayAPI : Executes refund (Idempotent)
+ExpiryWorker --> ResTable : Inspects expired leases
+ExpiryWorker --> StockTable : Decrements reserved count
+
+' External Webhook
+GatewayAPI --> Proxy : Webhook (Signed HMAC)
+@enduml

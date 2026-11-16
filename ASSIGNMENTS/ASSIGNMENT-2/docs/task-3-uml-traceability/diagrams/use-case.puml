@@ -1,0 +1,96 @@
+@startuml
+title Use Case Diagram - Omnichannel Order Fulfilment Platform
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam monochrome true
+
+actor Customer as C
+actor "Warehouse Picker" as P
+actor "Support Agent" as SA
+actor "Finance Reviewer" as FR
+actor "Store Manager" as SM
+actor Administrator as AD
+actor "Payment Gateway" as PG <<External>>
+actor "Courier API" as CA <<External>>
+actor "Warehouse Scanner" as WS <<Edge Device>>
+
+rectangle "Omnichannel Order Fulfilment Platform" {
+    package "Storefront & Orders" {
+        usecase "Browse Catalogue & Prices" as UC1
+        usecase "Place Order & Reserve Stock" as UC2
+        usecase "View Own Order & Tracking" as UC3
+        usecase "Cancel Order (Pre-Payment)" as UC4
+    }
+
+    package "Warehouse & Dispatch" {
+        usecase "View Assigned Pick Lists" as UC5
+        usecase "Confirm Pick & Pack" as UC6
+        usecase "Dispatch Order with Courier" as UC7
+        usecase "Sync Offline Scan Batch" as UC8
+    }
+
+    package "Returns & Finance Governance" {
+        usecase "Request Return" as UC9
+        usecase "Review & Approve Refund" as UC10
+        usecase "Reject Refund" as UC11
+        usecase "Execute Gateway Refund" as UC12
+    }
+
+    package "Operations & Management" {
+        usecase "Search Orders (Masked View)" as UC13
+        usecase "View Consolidated Reports" as UC14
+        usecase "Manage Regional Policies & Roles" as UC15
+        usecase "Process Verified Payment Callback" as UC16
+    }
+}
+
+' Customer Interactions
+C --> UC1
+C --> UC2
+C --> UC3
+C --> UC4
+C --> UC9
+
+' Picker Interactions
+P --> UC5
+P --> UC6
+P --> UC7
+
+' Support Agent Interactions
+SA --> UC13
+SA --> UC9
+
+' Finance Reviewer Interactions
+FR --> UC10
+FR --> UC11
+FR --> UC12
+
+' Store Manager Interactions
+SM --> UC14
+
+' Administrator Interactions
+AD --> UC15
+
+' External System Interactions
+PG --> UC16
+UC7 ..> CA : <<asynchronous intent>>
+UC12 ..> PG : <<idempotent execution>>
+WS --> UC8
+
+' Relationships and Guards
+UC2 ..> UC1 : <<includes>>
+UC12 ..> UC10 : <<requires approval>>
+UC13 ..> UC3 : <<masked projection>>
+
+note right of UC10
+  Refunds > $50.00 mandate 
+  Finance Reviewer approval.
+  Requesters cannot approve.
+end note
+
+note right of UC16
+  HMAC-SHA256 signature verified.
+  Unique (gateway_id, event_id).
+end note
+@enduml

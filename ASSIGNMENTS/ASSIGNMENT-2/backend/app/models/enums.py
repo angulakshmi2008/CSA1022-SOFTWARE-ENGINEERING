@@ -1,0 +1,43 @@
+from enum import Enum
+
+class UserRole(str, Enum):
+    CUSTOMER = "CUSTOMER"
+    PICKER = "PICKER"
+    SUPPORT_AGENT = "SUPPORT_AGENT"
+    FINANCE_REVIEWER = "FINANCE_REVIEWER"
+    STORE_MANAGER = "STORE_MANAGER"
+    ADMINISTRATOR = "ADMINISTRATOR"
+
+class OrderState(str, Enum):
+    PLACED = "PLACED"
+    PAID = "PAID"
+    PACKED = "PACKED"
+    DISPATCHED = "DISPATCHED"
+    DELIVERED = "DELIVERED"
+    CLOSED = "CLOSED"
+    CANCELLED = "CANCELLED"
+    NEEDS_REFUND = "NEEDS_REFUND"
+
+class RefundState(str, Enum):
+    REQUESTED = "REQUESTED"
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
+    EXECUTING = "EXECUTING"
+    FAILED = "FAILED"
+    EXECUTED = "EXECUTED"
+
+class ReservationStatus(str, Enum):
+    ACTIVE = "ACTIVE"
+    CONSUMED = "CONSUMED"
+    RELEASED = "RELEASED"
+    EXPIRED = "EXPIRED"
+
+class IntentStatus(str, Enum):
+    PENDING = "PENDING"
+    IN_PROGRESS = "IN_PROGRESS"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+
+class IntentPurpose(str, Enum):
+    COURIER_DISPATCH = "COURIER_DISPATCH"
+    GATEWAY_REFUND = "GATEWAY_REFUND"
