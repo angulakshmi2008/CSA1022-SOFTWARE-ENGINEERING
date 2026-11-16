@@ -1,0 +1,47 @@
+[
+  {
+    "sku": "SKU-TSHIRT-01",
+    "name": "Classic Organic Cotton T-Shirt",
+    "category": "Apparel",
+    "price": 25.00,
+    "stock_quantity": 50,
+    "low_stock_threshold": 5,
+    "barcode": "8901001000101"
+  },
+  {
+    "sku": "SKU-SNEAKER-02",
+    "name": "OmniPro Runner Sneakers",
+    "category": "Footwear",
+    "price": 85.00,
+    "stock_quantity": 10,
+    "low_stock_threshold": 3,
+    "barcode": "8901002000202"
+  },
+  {
+    "sku": "SKU-JACKET-03",
+    "name": "Waterproof All-Weather Jacket",
+    "category": "Outerwear",
+    "price": 120.00,
+    "stock_quantity": 8,
+    "low_stock_threshold": 2,
+    "barcode": "8901003000303"
+  },
+  {
+    "sku": "SKU-CAP-04",
+    "name": "Adjustable Sports Cap",
+    "category": "Accessories",
+    "price": 18.00,
+    "stock_quantity": 25,
+    "low_stock_threshold": 4,
+    "barcode": "8901004000404"
+  },
+  {
+    "sku": "SKU-LIMITED-05",
+    "name": "Festival Limited Edition Watch",
+    "category": "Electronics",
+    "price": 250.00,
+    "stock_quantity": 10,
+    "low_stock_threshold": 3,
+    "barcode": "8901005000505"
+  }
+]

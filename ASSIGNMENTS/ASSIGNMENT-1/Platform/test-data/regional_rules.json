@@ -1,0 +1,29 @@
+{
+  "REG-NORTH": {
+    "region_name": "Northern Regional Hub (Delhi/NCR)",
+    "warehouse_id": "WH-NORTH-01",
+    "tax_rate": 0.12,
+    "shipping_flat_rate": 15.00,
+    "free_shipping_threshold": 100.00,
+    "single_finance_refund_limit": 500.00,
+    "return_window_days": 14
+  },
+  "REG-SOUTH": {
+    "region_name": "Southern Regional Hub (Chennai/Bangalore)",
+    "warehouse_id": "WH-SOUTH-02",
+    "tax_rate": 0.08,
+    "shipping_flat_rate": 12.00,
+    "free_shipping_threshold": 80.00,
+    "single_finance_refund_limit": 400.00,
+    "return_window_days": 14
+  },
+  "REG-WEST": {
+    "region_name": "Western Regional Hub (Mumbai/Pune)",
+    "warehouse_id": "WH-WEST-03",
+    "tax_rate": 0.10,
+    "shipping_flat_rate": 10.00,
+    "free_shipping_threshold": 75.00,
+    "single_finance_refund_limit": 600.00,
+    "return_window_days": 21
+  }
+}

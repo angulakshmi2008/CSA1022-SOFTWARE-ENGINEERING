@@ -1,0 +1,47 @@
+===========================================================================
+  CSA10 SOFTWARE ENGINEERING - AUTOMATED TEST SUITE EXECUTION REPORT
+  Target Course Outcome: CO1 | Bloom's Taxonomy: BTL 5 & BTL 6
+  Timestamp: 2026-11-14T15:00:03Z
+===========================================================================
+
+test_concurrent_reservations_prevent_negative_stock (test_concurrency_stock.TestStockConcurrency)
+MSC-02: Under 100 concurrent reservation attempts for a 10-unit item, ... ok
+test_full_successful_order_to_refund_lifecycle (test_order_lifecycle.TestOrderLifecycle)
+MSC-01: Verifies the complete 10-state operational lifecycle. ... ok
+test_invalid_lifecycle_transition_rejected (test_order_lifecycle.TestOrderLifecycle)
+MSC-01 Negative Test: Asserts invalid transition jumps are rejected. ... ok
+test_gateway_timeout_leaves_order_recoverable (test_payment_idempotency.TestPaymentIdempotency)
+MSC-03: Gateway timeout leaves order in RESERVED state without crashing. ... ok
+test_ten_repeated_payment_requests_create_exactly_one_intent (test_payment_idempotency.TestPaymentIdempotency)
+MSC-03: Ten retries with identical idempotency key must return the identical ... ok
+test_north_region_calculations (test_regional_policies.TestRegionalPolicies)
+Verify Region North (12% tax, $15 shipping under $100). ... ok
+test_regional_refund_thresholds (test_regional_policies.TestRegionalPolicies)
+Verify regional single-approver finance limits. ... ok
+test_south_region_calculations (test_regional_policies.TestRegionalPolicies)
+Verify Region South (8% tax, $12 shipping under $80). ... ok
+test_west_region_calculations (test_regional_policies.TestRegionalPolicies)
+Verify Region West (10% tax, $10 shipping under $75, 21-day return). ... ok
+test_finance_reviewer_can_approve_refund (test_security_roles.TestSecurityRoles)
+MSC-04: Finance reviewer role successfully approves refund and logs audit. ... ok
+test_support_agent_cannot_approve_refund (test_security_roles.TestSecurityRoles)
+MSC-04: Support agent role must be rejected when attempting to approve a refund. ... ok
+test_tampered_token_rejected (test_security_roles.TestSecurityRoles)
+Security: Tampered token must raise AuthenticationError. ... ok
+test_warehouse_picker_cannot_approve_refund (test_security_roles.TestSecurityRoles)
+MSC-04: Warehouse picker role must be rejected when attempting to approve a refund. ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 4.744s
+
+OK
+
+===========================================================================
+  TEST EXECUTION SUMMARY:
+  Tests Run:     13
+  Passed:        13
+  Failures:      0
+  Errors:        0
+  Success Rate:  100.0%
+===========================================================================
+  STATUS: ALL ACCEPTANCE GATES SATISFIED (READY FOR SUBMISSION)

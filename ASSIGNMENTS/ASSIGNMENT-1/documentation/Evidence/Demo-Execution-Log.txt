@@ -1,0 +1,60 @@
+===========================================================================
+  OMNICHANNEL ORDER FULFILMENT PLATFORM - INTERACTIVE CLI DEMO
+  CSA10 Software Engineering Assignment 1 Prototype Walkthrough
+===========================================================================
+
+[Step 1] Initializing & seeding synthetic database...
+  -> Database seeded with 5 synthetic products and 3 regional policies.
+
+[Step 2] Authenticating personas...
+  -> Logged in: Customer Alex, Picker John, Finance Frank, Support Sarah.
+
+[Step 3] Customer Alex creates order (2x Classic Cotton T-Shirt, REG-NORTH)...
+  -> Order Created: ORD-3AC870AF | Total: $71.00 | Status: RESERVED
+
+[Step 4] Customer Alex pays for order with Idempotency Key 'IDEMP-DEMO-001'...
+  -> Payment Charged: Intent PI-427E08DECB00 | Status: SUCCESS
+
+[Step 4b] Testing duplicate payment retry with identical idempotency key...
+  -> Duplicate Key Detected: True | Message: Idempotent response: Returning previously processed transaction intent.
+
+[Step 5] Warehouse Picker John inspects pick list for WH-NORTH-01...
+  -> Order ORD-3AC870AF found on pick list for WH-NORTH-01 (Quantity: 2)
+
+[Step 6] Picker John scans item barcode ('8901001000101')...
+  -> Barcode Verified: True
+
+[Step 7] Order advances through fulfillment state machine...
+  -> Order lifecycle completed to DELIVERED.
+
+[Step 8] Customer Alex views public tracking milestones...
+  -> Public Status: DELIVERED | Tracking No: TRK-1C21B37768
+     [X] Milestone: PAID
+     [X] Milestone: PICKED
+     [X] Milestone: DISPATCHED
+     [X] Milestone: DELIVERED
+     [ ] Milestone: REFUNDED
+
+[Step 9] Customer Alex submits return request ('Size too large')...
+  -> Order status transitioned to RETURN_REQUESTED.
+
+[Step 10] Testing Security Role Guard: Support Sarah attempts to approve refund...
+  -> Security Guard Active: Successfully blocked support agent! (PermissionDeniedError: Role 'SUPPORT_AGENT' is not authorized. Required: ['FINANCE_REVIEWER', 'ADMINISTRATOR'])
+
+[Step 11] Finance Reviewer Frank authorizes refund...
+  -> Refund Approved! Txn: GW-REF-DF08C3F3EC | Status: REFUNDED
+
+[Step 12] Immutable Audit Ledger Inspection:
+  [2026-11-14T15:00:22] ORDER_CREATED      by cust_alex      (CUSTOMER        ) : NONE -> CREATED | Order initialized
+  [2026-11-14T15:00:22] STATUS_CHANGE      by cust_alex      (CUSTOMER        ) : CREATED -> RESERVED | Inventory reserved atomically with 15m TTL
+  [2026-11-14T15:00:22] STATUS_CHANGE      by cust_alex      (CUSTOMER        ) : RESERVED -> PAID | Payment intent PI-427E08DECB00 charged successfully
+  [2026-11-14T15:00:23] STATUS_CHANGE      by picker_john    (WAREHOUSE_PICKER) : PAID -> PICKING | Picker started batch
+  [2026-11-14T15:00:23] STATUS_CHANGE      by picker_john    (WAREHOUSE_PICKER) : PICKING -> PICKED | Picker completed bin scan
+  [2026-11-14T15:00:23] STATUS_CHANGE      by picker_john    (WAREHOUSE_PICKER) : PICKED -> DISPATCHED | Handed to courier
+  [2026-11-14T15:00:23] STATUS_CHANGE      by picker_john    (WAREHOUSE_PICKER) : DISPATCHED -> DELIVERED | Delivered to customer doorstep
+  [2026-11-14T15:00:23] STATUS_CHANGE      by cust_alex      (CUSTOMER        ) : DELIVERED -> RETURN_REQUESTED | Return requested: Size too large
+  [2026-11-14T15:00:23] REFUND_APPROVED    by finance_frank  (FINANCE_REVIEWER) : RETURN_REQUESTED -> REFUNDED | Refund $71.0 approved by Finance. Txn: GW-REF-DF08C3F3EC. Reason: Customer return validated; apparel unworn.
+
+===========================================================================
+  DEMONSTRATION COMPLETED SUCCESSFULLY: ALL WORKFLOW GATES PASSED
+===========================================================================
