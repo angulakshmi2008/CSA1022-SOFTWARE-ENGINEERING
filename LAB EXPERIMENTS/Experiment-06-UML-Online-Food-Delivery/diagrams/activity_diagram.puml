@@ -1,0 +1,38 @@
+@startuml Activity_OnlineFoodDelivery
+title Online Food Delivery System - Activity Diagram\nSaveetha School of Engineering | CSA10 | Angulakshmi S (192524402)
+
+start
+
+:Customer logs into platform;
+:Browse list of restaurants;
+:Select restaurant and view menu;
+:Add food items to cart;
+:Proceed to checkout and place order;
+:Initiate online payment;
+
+if (Payment Successful?) then (yes)
+    :Order confirmed and payment receipt generated;
+    :Notify restaurant with order details;
+    
+    fork
+        :Restaurant prepares food items;
+    fork again
+        :System assigns nearest delivery agent;
+        :Delivery agent accepts delivery request;
+    end fork
+    
+    :Delivery agent picks up packaged order;
+    :Agent updates delivery progress (en route);
+    :Customer tracks delivery location on map;
+    :Agent delivers food at customer address;
+    :Customer receives order & confirms completion;
+else (no)
+    :Display payment failed error message;
+    :Prompt user to retry payment or cancel order;
+    stop
+endif
+
+:Record transaction in system history;
+stop
+
+@enduml

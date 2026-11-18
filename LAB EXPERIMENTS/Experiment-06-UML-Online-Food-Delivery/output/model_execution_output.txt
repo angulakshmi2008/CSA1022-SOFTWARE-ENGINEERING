@@ -1,0 +1,27 @@
+==================================================================
+      ONLINE FOOD DELIVERY SYSTEM - UML MODEL EXECUTION           
+==================================================================
+
+[Customer: Angulakshmi S] Browsing Available Restaurants:
+  • Spice Garden Restaurant | Location: Chennai Central | Rating: 4.6★
+
+--- Menu (ID: 1010) ---
+  [1] Paneer Butter Masala - Rs. 240.00 (Main Course) [Available]
+  [2] Butter Naan (2 pcs) - Rs. 60.00 (Breads) [Available]
+  [3] Veg Dum Biryani - Rs. 190.00 (Rice) [Available]
+  [4] Gulab Jamun (2 pcs) - Rs. 70.00 (Dessert) [Available]
+
+[Customer: Angulakshmi S] Placed Order #5001 with 3 items. Total: Rs. 370.00
+
+[Payment #9001] Processing Rs. 370.00 via UPI / GPay...
+[Order #5001] Status -> Paid & Confirmed
+[Payment #9001] Payment SUCCESSFUL.
+[Restaurant: Spice Garden Restaurant] Order #5001 status updated to: 'Food Preparation in Progress'
+[Delivery Agent: Ramesh Kumar] Accepted Delivery for Order #5001. Vehicle: TN-09-AB-1234
+[Delivery #7001] Live Status: Picked up from Spice Garden (Destination: Saveetha Hostels, Chennai)
+[Delivery #7001] Live Status: Out for Delivery - 5 mins away (Destination: Saveetha Hostels, Chennai)
+[Delivery #7001] Live Status: Order Delivered Successfully to Customer (Destination: Saveetha Hostels, Chennai)
+[Order #5001] Status -> Completed
+==================================================================
+                 WORKFLOW SIMULATION COMPLETED                    
+==================================================================

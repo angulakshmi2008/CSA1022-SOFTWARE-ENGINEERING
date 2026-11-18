@@ -1,0 +1,92 @@
+@startuml ClassDiagram_OnlineFoodDelivery
+title Online Food Delivery System - Class Diagram\nSaveetha School of Engineering | CSA10 | Angulakshmi S (192524402)
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor #F9F9F9
+    BorderColor #1A5276
+    ArrowColor #1A5276
+}
+
+class Customer {
+    - customerId: int
+    - name: String
+    - phone: String
+    - address: String
+    + login(): boolean
+    + browseRestaurants(): List
+    + placeOrder(): Order
+    + makePayment(): boolean
+}
+
+class Restaurant {
+    - restaurantId: int
+    - name: String
+    - location: String
+    - rating: double
+    + manageMenu(): void
+    + updateOrderStatus(orderId: int, status: String): void
+}
+
+class Menu {
+    - menuId: int
+    - restaurantId: int
+    + addItem(item: FoodItem): void
+    + removeItem(itemId: int): void
+}
+
+class FoodItem {
+    - itemId: int
+    - itemName: String
+    - price: double
+    - category: String
+    - isAvailable: boolean
+    + getDetails(): String
+}
+
+class Order {
+    - orderId: int
+    - customerId: int
+    - orderDate: String
+    - totalAmount: double
+    - status: String
+    + createOrder(): void
+    + cancelOrder(): void
+    + calculateTotal(): double
+}
+
+class Payment {
+    - paymentId: int
+    - orderId: int
+    - amount: double
+    - paymentStatus: String
+    + makePayment(): void
+    + verifyPayment(): boolean
+}
+
+class DeliveryAgent {
+    - agentId: int
+    - name: String
+    - phone: String
+    - vehicleNo: String
+    + acceptDelivery(): void
+    + updateDeliveryStatus(): void
+}
+
+class Delivery {
+    - deliveryId: int
+    - orderId: int
+    - agentId: int
+    - status: String
+    + trackLocation(): String
+    + completeDelivery(): void
+}
+
+Customer "1" -- "0..*" Order : places >
+Restaurant "1" *-- "1" Menu : owns >
+Menu "1" o-- "1..*" FoodItem : contains >
+Order "1" -- "1" Payment : requires >
+Order "1" -- "0..1" Delivery : fulfilled by >
+DeliveryAgent "1" -- "0..*" Delivery : delivers >
+
+@enduml
