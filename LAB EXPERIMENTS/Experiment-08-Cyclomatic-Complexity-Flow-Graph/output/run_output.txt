@@ -1,0 +1,53 @@
+======================================================================
+      SOFTWARE TESTING: CYCLOMATIC COMPLEXITY VERIFICATION            
+======================================================================
+Saveetha School of Engineering | Course: CSA10 | Angulakshmi S (192524402)
+----------------------------------------------------------------------
+Total Nodes (N)           : 13
+Total Edges (E)           : 17
+Predicate Nodes List (P)  : [1, 2, 5, 8, 11] (Total: 5)
+Connected Components (p)  : 1
+
+--- Directed Graph Edge List ---
+  Edge 01: Node  1  -->  Node  2
+  Edge 02: Node  2  -->  Node  3
+  Edge 03: Node  2  -->  Node  4
+  Edge 04: Node  3  -->  Node  5
+  Edge 05: Node  4  -->  Node  5
+  Edge 06: Node  5  -->  Node  6
+  Edge 07: Node  5  -->  Node  7
+  Edge 08: Node  6  -->  Node  8
+  Edge 09: Node  7  -->  Node  8
+  Edge 10: Node  8  -->  Node  9
+  Edge 11: Node  8  -->  Node 10
+  Edge 12: Node  9  -->  Node 11
+  Edge 13: Node 10  -->  Node 11
+  Edge 14: Node 11  -->  Node 12
+  Edge 15: Node 11  -->  Node 13
+  Edge 16: Node 12  -->  Node 13
+  Edge 17: Node  1  -->  Node 13
+
+[Method 1] Formula: V(G) = E - N + 2P (where P=1)
+           V(G) = 17 - 13 + 2 = 6
+
+[Method 2] Formula: V(G) = Predicate Nodes + 1
+           V(G) = 5 + 1 = 6
+
+[Method 3] Planar Region Formula: V(G) = Number of Regions (R)
+           V(G) = 5 enclosed + 1 external = 6
+
+>>> VERIFICATION SUCCESS: All three methods yield V(G) = 6.
+
+--- Complexity & Risk Assessment ---
+Complexity Rating : Simple program
+Risk Assessment   : Low Risk
+Testing Effort    : Minimum 6 linearly independent test paths required.
+
+--- Basis Path Testing (Independent Execution Paths) ---
+Path 1: 1 -> 2 -> 3 -> 5 -> 6 -> 8 -> 9 -> 11 -> 12 -> 13
+Path 2: 1 -> 2 -> 3 -> 5 -> 6 -> 8 -> 9 -> 11 -> 13
+Path 3: 1 -> 2 -> 3 -> 5 -> 6 -> 8 -> 10 -> 11 -> 12 -> 13
+Path 4: 1 -> 2 -> 3 -> 5 -> 6 -> 8 -> 10 -> 11 -> 13
+Path 5: 1 -> 2 -> 3 -> 5 -> 7 -> 8 -> 9 -> 11 -> 12 -> 13
+Path 6: 1 -> 2 -> 3 -> 5 -> 7 -> 8 -> 9 -> 11 -> 13
+======================================================================
