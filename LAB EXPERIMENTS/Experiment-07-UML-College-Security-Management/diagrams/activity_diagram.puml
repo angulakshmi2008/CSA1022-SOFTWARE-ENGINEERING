@@ -1,0 +1,42 @@
+@startuml Activity_CollegeSecurity
+title College Security Management System - Activity Diagram\nSaveetha School of Engineering | CSA10 | Angulakshmi S (192524402)
+
+start
+
+:User logs into Security Management Portal;
+
+if (Role == Administrator?) then (yes)
+    :View campus location coverage;
+    :Assign duty shifts to security guards;
+    if (Pending leave applications?) then (yes)
+        :Review guard leave requests;
+        :Approve or reject leave;
+    else (no)
+    endif
+    :Generate security coverage report;
+else (no)
+    if (Role == Security Personnel?) then (yes)
+        :View assigned duty schedule & shift location;
+        :Record attendance (Check-in timestamp);
+        :Perform patrol and monitoring duties;
+        
+        if (Needs to take leave?) then (yes)
+            :Submit leave application with reason;
+            :Await admin approval;
+        else (no)
+        endif
+        
+        :Complete shift and record Check-out;
+    else (Role == Accounts Officer)
+        :Fetch month attendance records and approved leaves;
+        :Compute total shifts completed;
+        :Deduct salary for unapproved/excess leaves;
+        :Calculate net payable salary;
+        :Generate monthly salary slips & disbursement report;
+    endif
+endif
+
+:Logout from portal;
+stop
+
+@enduml

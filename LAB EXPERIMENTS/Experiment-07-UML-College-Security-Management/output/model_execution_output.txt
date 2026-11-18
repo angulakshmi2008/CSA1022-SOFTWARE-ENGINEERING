@@ -1,0 +1,26 @@
+==================================================================
+      COLLEGE SECURITY MANAGEMENT SYSTEM - MODEL EXECUTION        
+==================================================================
+[Admin: ChiefSecurityOfficer] Assigned Duty #1001 to M. Thangaraj at Main Entrance Gate (Gate 1)
+[Admin: ChiefSecurityOfficer] Assigned Duty #1002 to K. Selvam at Central Library Block (Gate 3)
+
+[Security Guard: M. Thangaraj] Assigned Duty Schedules:
+  • Date: 2026-11-19 | Shift: 06:00 AM - 02:00 PM | Location: Main Entrance Gate (Gate 1) | Status: Scheduled
+[Attendance] Guard M. Thangaraj checked in at 05:55 AM, checked out at 02:05 PM on 2026-11-19
+[Security Guard: M. Thangaraj] Applied for Leave on 2026-11-25. Reason: 'Medical checkup and personal leave'
+[Admin: ChiefSecurityOfficer] Approved Leave #301 for Guard #501
+
+========================================================
+             COLLEGE SECURITY SALARY PAYSLIP            
+========================================================
+Salary Slip ID   : SAL-701
+Month            : November 2026
+Security Guard   : M. Thangaraj (ID: 501)
+Designation      : Senior Guard
+Basic Monthly Pay: Rs. 24,000.00
+Duties Attended  : 1 shifts
+Approved Leaves  : 1 days
+Leave Deductions : Rs. 800.00
+--------------------------------------------------------
+NET PAYABLE SALARY: Rs. 23,200.00
+========================================================

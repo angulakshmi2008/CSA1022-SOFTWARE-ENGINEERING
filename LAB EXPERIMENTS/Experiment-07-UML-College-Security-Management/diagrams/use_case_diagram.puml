@@ -1,0 +1,50 @@
+@startuml UseCase_CollegeSecurity
+title College Security Management System - Use Case Diagram\nSaveetha School of Engineering | CSA10 | Angulakshmi S (192524402)
+
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+actor Administrator as Admin
+actor "Security Personnel" as SP
+actor "Accounts Officer" as AO
+
+rectangle "College Security Management System" {
+    usecase "Login / Authentication" as UC_Login
+    usecase "Assign Duty & Shifts" as UC_AssignDuty
+    usecase "View Duty Schedule" as UC_ViewSched
+    usecase "Record Attendance (Check In/Out)" as UC_Att
+    usecase "Update Duty Status" as UC_Status
+    usecase "Apply for Leave" as UC_ApplyLeave
+    usecase "Approve / Reject Leave" as UC_ApproveLeave
+    usecase "Manage Guard Profiles" as UC_ManageGuards
+    usecase "Calculate Monthly Salary" as UC_CalcSalary
+    usecase "Generate Salary Reports" as UC_SalaryReport
+    usecase "Generate Security Audit Reports" as UC_AuditReport
+    usecase "Logout" as UC_Logout
+}
+
+Admin --> UC_Login
+Admin --> UC_AssignDuty
+Admin --> UC_ApproveLeave
+Admin --> UC_ManageGuards
+Admin --> UC_AuditReport
+Admin --> UC_Logout
+
+SP --> UC_Login
+SP --> UC_ViewSched
+SP --> UC_Att
+SP --> UC_Status
+SP --> UC_ApplyLeave
+SP --> UC_Logout
+
+AO --> UC_Login
+AO --> UC_CalcSalary
+AO --> UC_SalaryReport
+AO --> UC_Logout
+
+UC_AssignDuty ..> UC_ViewSched : <<include>>
+UC_CalcSalary ..> UC_Att : <<include>>
+UC_CalcSalary ..> UC_ApproveLeave : <<include>>
+
+@enduml

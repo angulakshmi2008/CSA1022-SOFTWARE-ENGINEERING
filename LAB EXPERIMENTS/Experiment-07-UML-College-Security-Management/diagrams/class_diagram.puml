@@ -1,0 +1,98 @@
+@startuml ClassDiagram_CollegeSecurity
+title College Security Management System - Class Diagram\nSaveetha School of Engineering | CSA10 | Angulakshmi S (192524402)
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor #FDFEFE
+    BorderColor #2C3E50
+    ArrowColor #2C3E50
+}
+
+class Administrator {
+    - adminId: int
+    - username: String
+    - password: String
+    + assignDuty(guardId: int, scheduleId: int): void
+    + approveLeave(leaveId: int): void
+    + generateReports(): void
+}
+
+class SecurityPersonnel {
+    - securityId: int
+    - name: String
+    - phone: String
+    - address: String
+    - designation: String
+    - basicSalary: double
+    + viewSchedule(): List
+    + applyLeave(date: String, reason: String): void
+    + recordAttendance(): void
+}
+
+class DutySchedule {
+    - dutyId: int
+    - date: String
+    - startTime: String
+    - endTime: String
+    - locationId: int
+    - status: String
+    + assignDuty(): void
+    + updateDutyStatus(): void
+}
+
+class CampusLocation {
+    - locationId: int
+    - buildingName: String
+    - gateNo: int
+    - isMonitored: boolean
+    + getLocationInfo(): String
+}
+
+class Attendance {
+    - attendanceId: int
+    - securityId: int
+    - date: String
+    - checkIn: String
+    - checkOut: String
+    - status: String
+    + recordAttendance(): void
+}
+
+class Leave {
+    - leaveId: int
+    - securityId: int
+    - leaveDate: String
+    - reason: String
+    - status: String
+    + applyLeave(): void
+    + approveLeave(): void
+}
+
+class Salary {
+    - salaryId: int
+    - securityId: int
+    - basicSalary: double
+    - totalDuties: int
+    - leaveCount: int
+    - finalSalary: double
+    + calculateSalary(): double
+    + generatePayslip(): void
+}
+
+class AccountsOfficer {
+    - officerId: int
+    - name: String
+    + processSalaries(): void
+    + generateSalaryReport(): void
+}
+
+Administrator "1" -- "0..*" DutySchedule : allocates >
+Administrator "1" -- "0..*" Leave : reviews >
+SecurityPersonnel "1" -- "0..*" DutySchedule : assigned to >
+DutySchedule "0..*" -- "1" CampusLocation : takes place at >
+SecurityPersonnel "1" -- "0..*" Attendance : records >
+SecurityPersonnel "1" -- "0..*" Leave : submits >
+SecurityPersonnel "1" -- "1..*" Salary : receives >
+AccountsOfficer "1" -- "0..*" Salary : prepares & audits >
+
+@enduml
