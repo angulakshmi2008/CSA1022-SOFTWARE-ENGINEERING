@@ -1,0 +1,15 @@
+======================================================================
+  RAPTOR Flowchart Simulation: Lexicographically Smallest String Swap  
+======================================================================
+Original String (str) : ccad
+Selected Swap Pair     : ch1 = 'c', ch2 = 'a'
+Modified string        : aacd
+======================================================================
+
+--- Additional Test Cases Verification ---
+Case 01 | Input: 'ccad', ch1='c', ch2='a' -> Output: 'aacd'
+Case 02 | Input: 'software' (swap 's' <-> 'a') -> Output: 'aoftwsre'
+Case 03 | Input: 'engineering' (swap 'n' <-> 'e') -> Output: 'negiennrieg'
+Case 04 | Input: 'bbaacc', ch1='b', ch2='a' -> Output: 'aabbcc'
+Case 05 | Input: 'zyxwv', ch1='z', ch2='v' -> Output: 'vyxwz'
+Case 06 | Input: 'abcde' (already minimal) -> Output: 'abcde'
