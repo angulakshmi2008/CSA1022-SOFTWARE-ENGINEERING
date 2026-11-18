@@ -1,0 +1,14 @@
+==================================================
+      RAPTOR Flowchart Simulation: String Length   
+==================================================
+Input: Enter a String: SoftwareEngineering
+Output: Total Number of Characters = 19
+==================================================
+
+--- Additional Test Cases Verification ---
+Test 01 | Input: 'SoftwareEngineering' | Length: 19
+Test 02 | Input: 'Saveetha School of Engineering' | Length: 30
+Test 03 | Input: 'CSA10-Software-Engineering' | Length: 26
+Test 04 | Input: 'AI & Data Science' | Length: 17
+Test 05 | Input: 'Hello World!' | Length: 12
+Test 06 | Input: '' | Length: 0
