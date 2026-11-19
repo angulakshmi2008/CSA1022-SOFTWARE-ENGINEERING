@@ -1,0 +1,6 @@
+Issue Key,Issue Type,Summary,Description,Priority,Story Points,Sprint,Status,Assignee
+SP-1,Story,Create User Registration Page,"As a new user, I want to register with my email and password so that I can access the system. Acceptance Criteria: Password strength validation, email verification link dispatched.",Highest,8,SP Sprint 1,Done,Angulakshmi S
+SP-2,Story,Develop API for Login,"As a frontend client, I want a secure REST API endpoint /api/auth/login with JWT token issuance so that sessions are authenticated. Acceptance Criteria: 200 OK with token on valid credentials, 401 Unauthorized on failure.",Highest,5,SP Sprint 1,Done,Angulakshmi S
+SP-3,Story,Design Home Page,"As an authenticated user, I want a responsive landing dashboard with navigation links to tasks and profile. Acceptance Criteria: Fully responsive layout for mobile and desktop.",Medium,5,SP Sprint 1,In Progress,Angulakshmi S
+SP-4,Task,Test Login Functionality,"Execute automated integration tests and security boundary tests (SQLi, brute-force throttling) for authentication.",Medium,3,SP Sprint 1,To Do,Angulakshmi S
+SP-5,Task,Deploy Application,"Containerize application with Docker and deploy to staging environment with health check validation.",Low,3,SP Sprint 1,To Do,Angulakshmi S

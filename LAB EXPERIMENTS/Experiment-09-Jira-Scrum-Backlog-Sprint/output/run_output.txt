@@ -1,0 +1,38 @@
+==================================================================
+      JIRA SCRUM SPRINT SIMULATION - SP SPRINT 1 (1 WEEK)         
+==================================================================
+Project: Scrum Workflow Project (Key: SP)
+Sprint : SP Sprint 1 | Duration: 7 Days (1 Week)
+Team   : Angulakshmi S (Developer / Scrum Team)
+------------------------------------------------------------------
+
+[Sprint Backlog Status]
+Key    | Type   | Priority | Points | Status       | Summary
+---------------------------------------------------------------------------
+SP-1   | Story  | Highest  | 8      | Done         | Create User Registration Page
+SP-2   | Story  | Highest  | 5      | Done         | Develop API for Login
+SP-3   | Story  | Medium   | 5      | In Progress  | Design Home Page
+SP-4   | Task   | Medium   | 3      | To Do        | Test Login Functionality
+SP-5   | Task   | Low      | 3      | To Do        | Deploy Application
+
+------------------------------------------------------------------
+Total Committed Story Points : 24 pts
+Completed (Done)             : 13 pts (54.2%)
+In Progress                  : 5 pts (20.8%)
+To Do (Pending)              : 6 pts (25.0%)
+------------------------------------------------------------------
+
+[Sprint Daily Burndown Log]
+Day   | Ideal Remaining (pts)  | Actual Remaining (pts)
+-------------------------------------------------------
+Day 0  | 24.0                   | 24                    
+Day 1  | 20.6                   | 24                    
+Day 2  | 17.1                   | 19                    
+Day 3  | 13.7                   | 16                    
+Day 4  | 10.3                   | 16                    
+Day 5  | 6.9                    | 11                    
+Day 6  | 3.4                    | 11                    
+Day 7  | 0.0                    | 11                    
+
+Successfully generated Sprint Burndown Chart at: output/burndown_chart.png
+==================================================================
