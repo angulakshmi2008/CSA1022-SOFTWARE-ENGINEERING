@@ -1,0 +1,24 @@
+==================================================================
+      ATLASSIAN JIRA + CONFLUENCE PROGRESS TRACKING INTEGRATION   
+==================================================================
+Confluence Space : Library Management System (LMS)
+Confluence Page  : Library Management System Project Overview
+Jira JQL Query   : project = LMS AND type = Task ORDER BY status DESC
+------------------------------------------------------------------
+Key      | Type   | Priority | Status       | Summary
+----------------------------------------------------------------------
+LMS-1    | Task   | Medium   | Done         | Develop Book Search Functionality
+LMS-2    | Task   | Medium   | Done         | Create User Login Page
+LMS-3    | Task   | Medium   | In Progress  | Implement Book Borrowing Module
+LMS-4    | Task   | Medium   | To Do        | Design Librarian Dashboard
+LMS-5    | Task   | Medium   | To Do        | Test Library Management System
+
+------------------------------------------------------------------
+Total Embedded Issues : 5
+Completed (Done)      : 2 (40.0%)
+In Progress           : 1 (20.0%)
+To Do                 : 2 (40.0%)
+Overall Progress      : 40.0% COMPLETE
+------------------------------------------------------------------
+Generated Confluence tracker image: confluence_progress_tracker.png
+==================================================================
