@@ -1,0 +1,5 @@
+Issue Key,Issue Type,Summary,Priority,MoSCoW Category,Kano Category,Labels,Story Points,Sprint,Status,Assignee
+TMS1-2,Task,User Login and Role Assignment,Highest,Must Have,Basic,"MoSCoW-Must,Kano-Basic",5,TMS1 Sprint 1,To Do,Angulakshmi S
+TMS1-3,Task,Task Creation and Assignment,Highest,Must Have,Basic,"MoSCoW-Must,Kano-Basic",8,TMS1 Sprint 1,In Progress,Angulakshmi S
+TMS1-4,Task,Task Prioritization and Deadlines,High,Should Have,Performance,"MoSCoW-Should,Kano-Performance",5,TMS1 Sprint 1,Done,Angulakshmi S
+TMS1-5,Task,Progress Tracking and Reporting,Medium,Could Have,Excitement,"MoSCoW-Could,Kano-Excitement",3,TMS1 Sprint 1,To Do,Angulakshmi S

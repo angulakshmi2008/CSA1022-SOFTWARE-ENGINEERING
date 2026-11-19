@@ -1,0 +1,22 @@
+==================================================================
+   JIRA TASK MANAGEMENT SYSTEM: MOSCOW & KANO DUAL EVALUATION     
+==================================================================
+Project: Task Management System (Key: TMS1)
+Sprint : TMS1 Sprint 1 | Duration: 1 Week
+Team   : Angulakshmi S (192524402)
+------------------------------------------------------------------
+Key     | Summary                             | MoSCoW      | Kano         | Status
+--------------------------------------------------------------------------------
+TMS1-2  | User Login and Role Assignment      | Must Have   | Basic        | To Do
+TMS1-3  | Task Creation and Assignment        | Must Have   | Basic        | In Progress
+TMS1-4  | Task Prioritization and Deadlines   | Should Have | Performance  | Done
+TMS1-5  | Progress Tracking and Reporting     | Could Have  | Excitement   | To Do
+
+------------------------------------------------------------------
+Prioritization Synthesis:
+  • Must Have + Basic       : Essential baseline foundation (Zero tolerance for omission)
+  • Should Have + Performance: Linear competitive driver (Directly scales user satisfaction)
+  • Could Have + Excitement  : Differentiator & delight factor (Competitive edge for team)
+------------------------------------------------------------------
+Generated Kano-MoSCoW matrix chart: moscow_kano_matrix.png
+==================================================================
