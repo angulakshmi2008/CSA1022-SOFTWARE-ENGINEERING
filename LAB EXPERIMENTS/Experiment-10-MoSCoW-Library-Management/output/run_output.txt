@@ -1,0 +1,28 @@
+==================================================================
+   EXPERIMENT 10: MOSCOW PRIORITIZATION EVALUATION COMPLETE       
+==================================================================
+Generated formatted Excel file: Library_Management_System_MoSCoW.xlsx
+Generated summary chart image : moscow_distribution_chart.png
+
+Category        | Count    | Percentage
+----------------------------------------
+Must Have       | 3        |     30.0%
+Should Have     | 2        |     20.0%
+Could Have      | 3        |     30.0%
+Won't Have      | 2        |     20.0%
+----------------------------------------
+Total           | 10       |    100.0%
+==================================================================
+
+[Detailed Requirement Allocations]
+R1: Search books by title and author       --> Must Have   (Core function)
+R2: Online book reservation               --> Must Have   (Key service)
+R3: Monthly borrowed-book reports         --> Should Have (Needed for management)
+R4: Email notification for overdue books   --> Should Have (Improves returns)
+R5: QR code scanning for borrow/return     --> Could Have  (Hardware-dependent)
+R6: User-friendly librarian dashboard      --> Must Have   (Daily operations)
+R7: Review and rate books                 --> Could Have  (Community feature)
+R8: Chatbot for user assistance            --> Won't Have  (High cost, out of initial scope)
+R9: Mobile app version                    --> Won't Have  (Web version sufficient)
+R10: Multi-language support               --> Could Have  (Localization enhancement)
+==================================================================

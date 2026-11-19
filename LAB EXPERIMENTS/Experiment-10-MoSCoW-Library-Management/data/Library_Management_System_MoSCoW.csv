@@ -1,0 +1,11 @@
+Requirement ID,Requirement Description,MoSCoW Category,User Impact,Implementation Feasibility,Justification
+R1,Search books by title and author,Must Have,High,High,Core functionality essential for users to find books easily in the library catalogue.
+R2,Online book reservation,Must Have,High,Medium,Key service that reduces physical counter visits and avoids lending conflicts.
+R3,Monthly borrowed-book reports for admin,Should Have,Medium,High,Needed for library administration and audits; can follow initial core deployment.
+R4,Email notification for overdue books,Should Have,High,High,Improves on-time book returns and decreases late dues with minimal development effort.
+R5,QR code scanning for borrow/return,Could Have,Medium,Medium,Speeds circulation and self-checkout counters but requires scanner hardware deployment.
+R6,User-friendly librarian dashboard,Must Have,High,High,Critical operational console for librarians to issue books manage records and handle inquiries.
+R7,Review and rate books,Could Have,Low,High,Adds social engagement and peer feedback but not vital for core book borrowing operations.
+R8,Chatbot for user assistance,Won't Have,Low,Low,High development and maintenance cost with low immediate ROI for initial release.
+R9,Mobile app version,Won't Have,Medium,Low,Large engineering effort and maintenance overhead; responsive web application is sufficient.
+R10,Multi-language support,Could Have,Medium,Medium,Helpful for linguistic diversity across campus; moderate translation and localization effort.
