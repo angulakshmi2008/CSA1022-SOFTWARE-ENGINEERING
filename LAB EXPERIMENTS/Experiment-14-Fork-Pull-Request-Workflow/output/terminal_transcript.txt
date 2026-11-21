@@ -1,0 +1,120 @@
+================================================================================
+EXPERIMENT 14: FORK AND PULL REQUEST COLLABORATION WORKFLOW
+STUDENT: Angulakshmi S | REGISTER NUMBER: 192524402
+ISOLATED LOCAL REPOSITORY SANDBOX EXECUTION TRANSCRIPT
+================================================================================
+
+
+$ git init --bare --initial-branch=main upstream-repo.git
+Initialized empty Git repository in C:/Users/ANGULAKSHMI SUBBURAJ/AppData/Local/Temp/git_exp14_ousu49ye/upstream-repo.git/
+
+$ git clone upstream-repo.git seed
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp14_ousu49ye\seed'...
+warning: You appear to have cloned an empty repository.
+done.
+
+$ git add README.md LICENSE
+
+$ git commit -m Initial commit from upstream maintainers
+[main (root-commit) 18550ee] Initial commit from upstream maintainers
+ 2 files changed, 7 insertions(+)
+ create mode 100644 LICENSE
+ create mode 100644 README.md
+
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp14_ousu49ye\upstream-repo.git
+ * [new branch]      main -> main
+
+$ [GitHub Web UI] Fork repository: upstream -> https://github.com/angulakshmi2008/first-contributions.git
+Cloning into bare repository 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp14_ousu49ye\fork-repo.git'...
+done.
+
+$ git clone https://github.com/angulakshmi2008/first-contributions.git
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp14_ousu49ye\first-contributions-local'...
+done.
+
+$ git branch -a
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/main
+
+$ git checkout -b update-readme
+Switched to a new branch 'update-readme'
+
+$ git branch
+main
+* update-readme
+
+$ git status
+On branch update-readme
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git diff
+diff --git a/README.md b/README.md
+index 5d50642..7f38be9 100644
+--- a/README.md
++++ b/README.md
+@@ -4,3 +4,9 @@ This project helps beginners learn the Fork & Pull Request workflow.
+ 
+ ## Contributors
+ - Alice (Maintainer)
++
++## Student Contribution
++- Contributor: Angulakshmi S
++- Register Number: 192524402
++- Course: CSA10 - Software Engineering
++- Notes: Updated README for collaboration experiment.
+
+$ git add README.md
+
+$ git commit -m Updated README for collaboration experiment
+[update-readme f9474c1] Updated README for collaboration experiment
+ 1 file changed, 6 insertions(+)
+
+$ git push -u origin update-readme
+branch 'update-readme' set up to track 'origin/update-readme'.
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp14_ousu49ye\fork-repo.git
+ * [new branch]      update-readme -> update-readme
+
+$ git add README.md
+
+$ git commit -m Addressed review comments
+[update-readme fddb436] Addressed review comments
+ 1 file changed, 1 insertion(+)
+
+$ git push origin update-readme
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp14_ousu49ye\fork-repo.git
+   f9474c1..fddb436  update-readme -> update-readme
+
+$ [Upstream Maintainer] Clone upstream repository to review and merge PR #122481
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp14_ousu49ye\upstream-maintainer'...
+done.
+
+$ git remote add contributor C:\Users\ANGULA~1\AppData\Local\Temp\git_exp14_ousu49ye\fork-repo.git
+
+$ git fetch contributor
+From C:\Users\ANGULA~1\AppData\Local\Temp\git_exp14_ousu49ye\fork-repo
+ * [new branch]      main          -> contributor/main
+ * [new branch]      update-readme -> contributor/update-readme
+
+$ git merge contributor/update-readme --no-ff -m Merge pull request #122481 from angulakshmi2008/update-readme
+Merge made by the 'ort' strategy.
+ README.md | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp14_ousu49ye\upstream-repo.git
+   18550ee..354f8fb  main -> main
+
+$ git log --graph --oneline --all
+*   354f8fb Merge pull request #122481 from angulakshmi2008/update-readme
+|\  
+| * fddb436 Addressed review comments
+| * f9474c1 Updated README for collaboration experiment
+|/  
+* 18550ee Initial commit from upstream maintainers
