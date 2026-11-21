@@ -1,0 +1,5 @@
+from django.apps import AppConfig
+
+class EquipmentLoansConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'equipment_loans'

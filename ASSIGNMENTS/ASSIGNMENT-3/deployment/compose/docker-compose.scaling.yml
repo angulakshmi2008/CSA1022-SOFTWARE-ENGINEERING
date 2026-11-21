@@ -1,0 +1,88 @@
+# Scaling deployment for Task 6: Two backend instances sharing persistent PostgreSQL
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: campus-db-scale
+    restart: always
+    environment:
+      POSTGRES_DB: campus
+      POSTGRES_USER: campus_app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-SecretCampusDBPass2026!}
+    volumes:
+      - postgres_scaling_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U campus_app -d campus"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - campus-scale-net
+
+  backend-1:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+    container_name: campus-backend-replica-1
+    restart: on-failure
+    environment:
+      DJANGO_ENV: production
+      DEBUG: "False"
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-django-prod-secret-key-csa1022-2026}
+      DATABASE_URL: postgres://campus_app:${POSTGRES_PASSWORD:-SecretCampusDBPass2026!}@db:5432/campus
+      INSTANCE_ID: backend-replica-1
+      ALLOWED_HOSTS: "localhost,127.0.0.1,backend-1,backend-2,proxy,frontend,0.0.0.0"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - campus-scale-net
+
+  backend-2:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+    container_name: campus-backend-replica-2
+    restart: on-failure
+    environment:
+      DJANGO_ENV: production
+      DEBUG: "False"
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-django-prod-secret-key-csa1022-2026}
+      DATABASE_URL: postgres://campus_app:${POSTGRES_PASSWORD:-SecretCampusDBPass2026!}@db:5432/campus
+      INSTANCE_ID: backend-replica-2
+      ALLOWED_HOSTS: "localhost,127.0.0.1,backend-1,backend-2,proxy,frontend,0.0.0.0"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - campus-scale-net
+
+  proxy:
+    image: nginx:alpine
+    container_name: campus-lb-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ../docker/nginx-lb.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend-1
+      - backend-2
+    networks:
+      - campus-scale-net
+
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
+    container_name: campus-frontend-scale
+    depends_on:
+      - proxy
+    networks:
+      - campus-scale-net
+
+volumes:
+  postgres_scaling_data:
+    name: campus_postgres_scaling_volume
+
+networks:
+  campus-scale-net:
+    driver: bridge

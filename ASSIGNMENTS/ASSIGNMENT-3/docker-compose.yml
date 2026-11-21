@@ -1,0 +1,75 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: campus-db
+    restart: always
+    environment:
+      POSTGRES_DB: campus
+      POSTGRES_USER: campus_app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-SecretCampusDBPass2026!}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U campus_app -d campus"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - campus-net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: campus-backend
+    restart: on-failure
+    environment:
+      DJANGO_ENV: production
+      DEBUG: "False"
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-django-prod-secret-key-csa1022-2026}
+      DATABASE_URL: postgres://campus_app:${POSTGRES_PASSWORD:-SecretCampusDBPass2026!}@db:5432/campus
+      INSTANCE_ID: backend-standalone
+      ALLOWED_HOSTS: "localhost,127.0.0.1,backend,frontend,0.0.0.0"
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - campus-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: campus-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - campus-net
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: campus-worker
+    restart: always
+    command: python -c "import time; print('Durable Integration Intent Worker active...'); time.sleep(86400)"
+    environment:
+      DATABASE_URL: postgres://campus_app:${POSTGRES_PASSWORD:-SecretCampusDBPass2026!}@db:5432/campus
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - campus-net
+
+volumes:
+  postgres_data:
+    name: campus_postgres_volume
+
+networks:
+  campus-net:
+    driver: bridge

@@ -1,0 +1,74 @@
+{
+  "step_10": {
+    "concurrency_level": 10,
+    "total_requests": 10,
+    "status_distribution": {
+      "409": 9,
+      "201": 1
+    },
+    "total_duration_sec": 0.166,
+    "throughput_req_per_sec": 60.28,
+    "latency_ms": {
+      "min": 146.37,
+      "mean": 151.61,
+      "p50": 151.93,
+      "p95": 155.15,
+      "p99": 155.15,
+      "max": 155.15
+    }
+  },
+  "step_25": {
+    "concurrency_level": 25,
+    "total_requests": 25,
+    "status_distribution": {
+      "409": 22,
+      "201": 3
+    },
+    "total_duration_sec": 0.271,
+    "throughput_req_per_sec": 92.17,
+    "latency_ms": {
+      "min": 84.65,
+      "mean": 161.26,
+      "p50": 170.06,
+      "p95": 202.82,
+      "p99": 214.65,
+      "max": 214.65
+    }
+  },
+  "step_50": {
+    "concurrency_level": 50,
+    "total_requests": 50,
+    "status_distribution": {
+      "409": 47,
+      "201": 3
+    },
+    "total_duration_sec": 0.449,
+    "throughput_req_per_sec": 111.34,
+    "latency_ms": {
+      "min": 160.73,
+      "mean": 228.2,
+      "p50": 221.83,
+      "p95": 294.53,
+      "p99": 358.29,
+      "max": 358.29
+    }
+  },
+  "step_100": {
+    "concurrency_level": 100,
+    "total_requests": 100,
+    "status_distribution": {
+      "409": 96,
+      "201": 4
+    },
+    "total_duration_sec": 0.834,
+    "throughput_req_per_sec": 119.89,
+    "latency_ms": {
+      "min": 131.38,
+      "mean": 383.24,
+      "p50": 367.36,
+      "p95": 526.68,
+      "p99": 625.81,
+      "max": 625.81
+    }
+  }
+}
