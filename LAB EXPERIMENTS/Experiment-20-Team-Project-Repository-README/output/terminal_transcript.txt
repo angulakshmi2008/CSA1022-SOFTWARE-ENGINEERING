@@ -1,0 +1,185 @@
+================================================================================
+EXPERIMENT 20: TEAM PROJECT REPOSITORY WITH BRANCHES & PR WORKFLOW
+STUDENT: Angulakshmi S | REGISTER NUMBER: 192524402
+ISOLATED LOCAL REPOSITORY SANDBOX EXECUTION TRANSCRIPT
+================================================================================
+
+
+$ git init --bare --initial-branch=main team-project.git
+Initialized empty Git repository in C:/Users/ANGULAKSHMI SUBBURAJ/AppData/Local/Temp/git_exp20_1w1hao8w/team-project.git/
+
+$ git clone team-project.git seed
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\seed'...
+warning: You appear to have cloned an empty repository.
+done.
+
+$ git add README.md
+
+$ git commit -m Initial commit with base project README
+[main (root-commit) bba6d76] Initial commit with base project README
+ 1 file changed, 4 insertions(+)
+ create mode 100644 README.md
+
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\team-project.git
+ * [new branch]      main -> main
+
+$ [Student 1: Angulakshmi S] git clone team-project.git
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\student1-login'...
+done.
+
+$ git checkout -b feature-login
+Switched to a new branch 'feature-login'
+
+$ git add login.py
+
+$ git commit -m 'Add login module'
+[feature-login c045a8f] Add login module
+ 1 file changed, 8 insertions(+)
+ create mode 100644 login.py
+
+$ git push -u origin feature-login
+branch 'feature-login' set up to track 'origin/feature-login'.
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\team-project.git
+ * [new branch]      feature-login -> feature-login
+
+$ [Student 2] git clone team-project.git
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\student2-catalog'...
+done.
+
+$ git checkout -b feature-catalog
+Switched to a new branch 'feature-catalog'
+
+$ git add catalog.py README.md
+
+$ git commit -m 'Add catalog module and update README'
+[feature-catalog a303164] Add catalog module and update README
+ 2 files changed, 7 insertions(+)
+ create mode 100644 catalog.py
+
+$ git push -u origin feature-catalog
+branch 'feature-catalog' set up to track 'origin/feature-catalog'.
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\team-project.git
+ * [new branch]      feature-catalog -> feature-catalog
+
+$ [Student 3] git clone team-project.git
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\student3-cart'...
+done.
+
+$ git checkout -b feature-cart
+Switched to a new branch 'feature-cart'
+
+$ git add cart.py README.md
+
+$ git commit -m 'Add cart module and update README'
+[feature-cart f4ecaf3] Add cart module and update README
+ 2 files changed, 8 insertions(+)
+ create mode 100644 cart.py
+
+$ git push -u origin feature-cart
+branch 'feature-cart' set up to track 'origin/feature-cart'.
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\team-project.git
+ * [new branch]      feature-cart -> feature-cart
+
+$ [Team Lead] Clone repository to review and merge PRs
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\team-lead'...
+done.
+
+$ git fetch origin
+
+$ git merge origin/feature-login
+Merge made by the 'ort' strategy.
+ login.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+ create mode 100644 login.py
+
+$ git merge origin/feature-catalog
+Merge made by the 'ort' strategy.
+ README.md  | 2 ++
+ catalog.py | 5 +++++
+ 2 files changed, 7 insertions(+)
+ create mode 100644 catalog.py
+
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\team-project.git
+   bba6d76..12e2efb  main -> main
+
+$ [Student 3] git fetch origin
+From C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\team-project
+   bba6d76..12e2efb  main       -> origin/main
+
+$ [Student 3] git merge origin/main (Conflict Occurs)
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Automatic merge failed; fix conflicts and then commit the result.
+
+$ [Student 3] git status (Conflicted state)
+On branch feature-cart
+Your branch is up to date with 'origin/feature-cart'.
+
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Changes to be committed:
+	new file:   catalog.py
+	new file:   login.py
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+	both modified:   README.md
+
+$ git add README.md
+
+$ git commit -m 'Resolve README merge conflict'
+[feature-cart 56e881d] Resolve README merge conflict
+
+$ git push origin feature-cart
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\team-project.git
+   f4ecaf3..56e881d  feature-cart -> feature-cart
+
+$ git fetch origin
+From C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\team-project
+   f4ecaf3..56e881d  feature-cart -> origin/feature-cart
+
+$ git merge origin/feature-cart
+Merge made by the 'ort' strategy.
+ README.md | 3 ++-
+ cart.py   | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+ create mode 100644 cart.py
+
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\team-project.git
+   12e2efb..899245c  main -> main
+
+$ git add README.md
+
+$ git commit -m 'Document team workflow and roster in README'
+[main 3070b3b] Document team workflow and roster in README
+ 1 file changed, 20 insertions(+), 4 deletions(-)
+
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp20_1w1hao8w\team-project.git
+   899245c..3070b3b  main -> main
+
+$ git log --graph --oneline --all
+* 3070b3b Document team workflow and roster in README
+*   899245c Merge pull request #3 from feature-cart (Student 3)
+|\  
+| *   56e881d Resolve README merge conflict
+| |\  
+| |/  
+|/|   
+* |   12e2efb Merge pull request #2 from feature-catalog (Student 2)
+|\ \  
+| * | a303164 Add catalog module and update README
+* | |   ec3dc80 Merge pull request #1 from feature-login (Angulakshmi S)
+|\ \ \  
+| |/ /  
+|/| |   
+| * | c045a8f Add login module
+|/ /  
+| * f4ecaf3 Add cart module and update README
+|/  
+* bba6d76 Initial commit with base project README
