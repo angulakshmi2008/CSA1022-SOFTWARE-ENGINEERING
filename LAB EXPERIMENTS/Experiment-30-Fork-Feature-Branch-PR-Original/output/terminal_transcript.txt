@@ -1,0 +1,207 @@
+# Original owner initializes upstream repository
+$ git init --bare --initial-branch=main C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\upstream_remote\3-Simple-Python-Projects.git
+Initialized empty Git repository in C:/Users/ANGULAKSHMI SUBBURAJ/AppData/Local/Temp/git_exp30_sandbox/upstream_remote/3-Simple-Python-Projects.git/
+
+# Seed upstream repository with 3-Simple-Python-Projects
+$ git clone C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\upstream_remote\3-Simple-Python-Projects.git C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\seed
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\seed'...
+warning: You appear to have cloned an empty repository.
+done.
+
+$ git config user.name Original Author
+
+$ git config user.email author@example.com
+
+$ git add README.md ytDownloader.py
+
+$ git commit -m Initial upstream release
+[main (root-commit) 55435a4] Initial upstream release
+ 2 files changed, 6 insertions(+)
+ create mode 100644 README.md
+ create mode 100644 ytDownloader.py
+
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\upstream_remote\3-Simple-Python-Projects.git
+ * [new branch]      main -> main
+
+# Step 1: Student forks 3-Simple-Python-Projects on GitHub
+$ git clone --bare C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\upstream_remote\3-Simple-Python-Projects.git C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\fork_remote\3-Simple-Python-Projects.git
+Cloning into bare repository 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\fork_remote\3-Simple-Python-Projects.git'...
+done.
+
+# Step 2: Clone forked repository locally
+$ git clone C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\fork_remote\3-Simple-Python-Projects.git C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\student_local\3-Simple-Python-Projects
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\student_local\3-Simple-Python-Projects'...
+done.
+
+$ git config user.name Angulakshmi S
+
+$ git config user.email angulakshmi2008@example.com
+
+# Check default origin remote pointing to fork
+$ git remote -v
+origin	C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\fork_remote\3-Simple-Python-Projects.git (fetch)
+origin	C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\fork_remote\3-Simple-Python-Projects.git (push)
+
+# Configure upstream remote to track original repository
+$ git remote add upstream C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\upstream_remote\3-Simple-Python-Projects.git
+
+# Verify both origin and upstream remotes
+$ git remote -v
+origin	C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\fork_remote\3-Simple-Python-Projects.git (fetch)
+origin	C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\fork_remote\3-Simple-Python-Projects.git (push)
+upstream	C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\upstream_remote\3-Simple-Python-Projects.git (fetch)
+upstream	C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\upstream_remote\3-Simple-Python-Projects.git (push)
+
+# Step 3: Create and switch to feature-update branch
+$ git checkout -b feature-update
+Switched to a new branch 'feature-update'
+
+# Verify active branch is feature-update
+$ git branch
+* feature-update
+  main
+
+# Step 5: Verify modified ytDownloader.py
+$ git status
+On branch feature-update
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   ytDownloader.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+# Review code diff against original upstream version
+$ git diff
+diff --git a/ytDownloader.py b/ytDownloader.py
+index 4fc3294..66e932c 100644
+--- a/ytDownloader.py
++++ b/ytDownloader.py
+@@ -1,3 +1,58 @@
+-# Simple YouTube Downloader
+-def download_video(url):
+-    print('Downloading video from', url)
++"""
++YouTube Video Downloader Utility
++Experiment 30: Forking, Feature Branch and Pull Request to Original Repository
++
++Original Project: 3-Simple-Python-Projects
++Feature Contributor: Angulakshmi S (Register Number: 192524402)
++Department: Computer Science and Engineering / AI & Data Science
++Institution: Saveetha School of Engineering, SIMATS
++"""
++
++import os
++import re
++
++def display_project_info():
++    """Display contributor and project enhancement metadata."""
++    print("=" * 65)
++    print("        YouTube Video Downloader - Enhanced Utility        ")
++    print("=" * 65)
++    print("  Feature: Project Information & Progress Tracking Interface")
++    print("  Author : Angulakshmi S (Reg No: 192524402)")
++    print("  Branch : feature-update | Upstream PR Contribution")
++    print("  College: Saveetha School of Engineering, SIMATS")
++    print("=" * 65)
++
++def validate_url(url):
++    """Validate YouTube URL format using regular expression."""
++    pattern = r'^(https?://)?(www\.)?(youtube\.com|youtu\.be)/.+$'
++    return bool(re.match(pattern, url.strip()))
++
++def calculate_download_progress(bytes_downloaded, total_bytes):
++    """Calculate progress percentage and human readable display string."""
++    if total_bytes <= 0:
++        return 0.0, "0%"
++    percent = (bytes_downloaded / total_bytes) * 100.0
++    return percent, f"{percent:.1f}% ({bytes_downloaded}/{total_bytes} bytes)"
++
++def download_video(url, output_path="./downloads"):
++    """Simulate robust video downloading pipeline."""
++    if not validate_url(url):
++        return False, "Invalid YouTube URL format."
++    os.makedirs(output_path, exist_ok=True)
++    display_project_info()
++    print(f"Target URL: {url}")
++    print(f"Target Save Directory: {output_path}")
++    
++    # Progress simulation
++    total = 10485760 # 10MB
++    for chunk in [2621440, 5242880, 7864320, 10485760]:
++        pct, label = calculate_download_progress(chunk, total)
++        print(f"  [DOWNLOADING] {label}")
++    print("[SUCCESS] Video download completed successfully.")
++    return True, os.path.join(output_path, "sample_video.mp4")
++
++if __name__ == "__main__":
++    display_project_info()
++    test_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
++    print("\nValidating test URL:", test_url, "->", validate_url(test_url))
++    download_video(test_url, output_path="./test_downloads")
+
+# Step 6: Stage modified file
+$ git add ytDownloader.py
+
+# Step 6: Commit changes ('Added project info feature')
+$ git commit -m Added project info feature
+[feature-update a232e7a] Added project info feature
+ 1 file changed, 58 insertions(+), 3 deletions(-)
+
+# Step 7: Push feature-update branch to personal fork
+$ git push -u origin feature-update
+branch 'feature-update' set up to track 'origin/feature-update'.
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\fork_remote\3-Simple-Python-Projects.git
+ * [new branch]      feature-update -> feature-update
+
+# Step 8: Upstream owner reviews incoming Pull Request
+$ git clone C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\upstream_remote\3-Simple-Python-Projects.git C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\upstream_owner\3-Simple-Python-Projects
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\upstream_owner\3-Simple-Python-Projects'...
+done.
+
+# Upstream fetches PR branch from student's fork
+$ git fetch C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\fork_remote\3-Simple-Python-Projects.git feature-update
+From C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\fork_remote\3-Simple-Python-Projects
+ * branch            feature-update -> FETCH_HEAD
+
+# Step 9: Upstream owner approves and merges PR into main
+$ git merge --no-ff FETCH_HEAD -m Merge pull request #1 from angulakshmi2008/feature-update (Added project info feature)
+Merge made by the 'ort' strategy.
+ ytDownloader.py | 61 ++++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 58 insertions(+), 3 deletions(-)
+
+# Upstream main updated with merged contribution
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\upstream_remote\3-Simple-Python-Projects.git
+   55435a4..fe56c79  main -> main
+
+# Step 10: Student switches to main and synchronizes with upstream
+$ git checkout main
+Your branch is up to date with 'origin/main'.
+Switched to branch 'main'
+
+# Fetch latest updates from upstream
+$ git fetch upstream
+From C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\upstream_remote\3-Simple-Python-Projects
+ * [new branch]      main       -> upstream/main
+
+# Merge upstream/main into local main
+$ git merge upstream/main
+Updating 55435a4..fe56c79
+Fast-forward
+ ytDownloader.py | 61 ++++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 58 insertions(+), 3 deletions(-)
+
+# Push synchronized main to personal fork
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp30_sandbox\fork_remote\3-Simple-Python-Projects.git
+   55435a4..fe56c79  main -> main
+
+# Inspect full commit graph showing fork, PR, and upstream sync
+$ git log --graph --oneline --all
+*   fe56c79 Merge pull request #1 from angulakshmi2008/feature-update (Added project info feature)
+|\  
+| * a232e7a Added project info feature
+|/  
+* 55435a4 Initial upstream release
