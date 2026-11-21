@@ -1,0 +1,78 @@
+# Initialize remote repository on GitHub
+$ git init --bare --initial-branch=main C:\Users\ANGULA~1\AppData\Local\Temp\git_exp28_sandbox\remote\collab_repo.git
+Initialized empty Git repository in C:/Users/ANGULAKSHMI SUBBURAJ/AppData/Local/Temp/git_exp28_sandbox/remote/collab_repo.git/
+
+# Student clones empty repository
+$ git clone C:\Users\ANGULA~1\AppData\Local\Temp\git_exp28_sandbox\remote\collab_repo.git C:\Users\ANGULA~1\AppData\Local\Temp\git_exp28_sandbox\student_workstation\collab_repo
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp28_sandbox\student_workstation\collab_repo'...
+warning: You appear to have cloned an empty repository.
+done.
+
+$ git config user.name Angulakshmi S
+
+$ git config user.email angulakshmi2008@example.com
+
+$ git add README.md
+
+$ git commit -m Initial repository setup
+[main (root-commit) 309e25c] Initial repository setup
+ 1 file changed, 3 insertions(+)
+ create mode 100644 README.md
+
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp28_sandbox\remote\collab_repo.git
+ * [new branch]      main -> main
+
+# Step 1: Collaborator clones repository on separate workstation
+$ git clone C:\Users\ANGULA~1\AppData\Local\Temp\git_exp28_sandbox\remote\collab_repo.git C:\Users\ANGULA~1\AppData\Local\Temp\git_exp28_sandbox\collaborator_workstation\collab_repo
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp28_sandbox\collaborator_workstation\collab_repo'...
+done.
+
+$ git config user.name Peer Collaborator
+
+$ git config user.email collaborator@example.com
+
+# Collaborator stages changes
+$ git add README.md contributor_notes.txt
+
+# Collaborator commits changes
+$ git commit -m Collaborator: Added project guidelines and notes
+[main d7213e3] Collaborator: Added project guidelines and notes
+ 2 files changed, 6 insertions(+)
+ create mode 100644 contributor_notes.txt
+
+# Collaborator pushes changes to GitHub origin/main
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp28_sandbox\remote\collab_repo.git
+   309e25c..d7213e3  main -> main
+
+# Step 2: Student checks local status before pulling
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+
+# Step 2: Student executes git pull origin main (Fast-forward)
+$ git pull origin main
+Updating 309e25c..d7213e3
+Fast-forward
+ README.md             | 3 +++
+ contributor_notes.txt | 3 +++
+ 2 files changed, 6 insertions(+)
+ create mode 100644 contributor_notes.txt
+From C:\Users\ANGULA~1\AppData\Local\Temp\git_exp28_sandbox\remote\collab_repo
+ * branch            main       -> FETCH_HEAD
+   309e25c..d7213e3  main       -> origin/main
+
+# Step 3: Verify student working tree is clean and synchronized
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+
+# Inspect updated commit graph showing collaborator's commit
+$ git log --graph --oneline --all
+* d7213e3 Collaborator: Added project guidelines and notes
+* 309e25c Initial repository setup
