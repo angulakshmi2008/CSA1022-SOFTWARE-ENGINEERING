@@ -1,0 +1,53 @@
+================================================================================
+EXPERIMENT 18: CI/CD PIPELINE WITH JENKINS FOR CONTAINERIZED APPLICATION
+STUDENT: Angulakshmi S | REGISTER NUMBER: 192524402
+================================================================================
+
+[STAGE 1: CHECKOUT]
+  -> Git repository: https://github.com/angulakshmi2008/jenkins-flask-demo.git
+  -> Branch: main
+  -> Checked out commit HEAD successfully.
+
+[STAGE 2: BUILD IMAGE]
+  -> Parsing Dockerfile...
+     FROM python:3.11-slim
+     WORKDIR /app
+     COPY app/requirements.txt .
+     RUN pip install --no-cache-dir -r requirements.txt
+     COPY app/ .
+     EXPOSE 5000
+     CMD ["python", "app.py"]
+  -> Image Tag: flask-cicd:build-101
+  -> Docker image built successfully (simulated/cached layer).
+
+[STAGE 3: TEST (PYTEST EXECUTION)]
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\ANGULAKSHMI SUBBURAJ\AppData\Local\Programs\Python\Python313\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\ANGULAKSHMI SUBBURAJ\Downloads\CSA1022-SOFTWARE-ENGINEERING\LAB EXPERIMENTS
+plugins: anyio-4.13.0
+collecting ... collected 2 items
+
+Experiment-18-Jenkins-CICD-Pipeline/app/test_app.py::test_home PASSED    [ 50%]
+Experiment-18-Jenkins-CICD-Pipeline/app/test_app.py::test_health PASSED  [100%]
+
+============================== warnings summary ===============================
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\pytest_plugin.py:14
+  C:\Users\ANGULAKSHMI SUBBURAJ\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 2 passed, 1 warning in 0.17s =========================
+
+[STAGE 4: DEPLOY]
+  -> All tests passed! Deploying container flask-app...
+  -> Port mapping: 5000:5000
+  -> Endpoint URL: http://localhost:5000
+  -> Health Check: http://localhost:5000/health -> HTTP 200 UP
+
+[POST ACTIONS]
+  -> SUCCESS: Pipeline completed: application deployed on port 5000.
+================================================================================

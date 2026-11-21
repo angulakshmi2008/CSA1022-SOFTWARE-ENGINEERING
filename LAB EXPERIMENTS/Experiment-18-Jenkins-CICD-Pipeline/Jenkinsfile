@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE = "flask-cicd"
+        TAG = "${env.BUILD_NUMBER}"
+        STUDENT_NAME = "Angulakshmi S"
+        REG_NO = "192524402"
+    }
+
+    triggers {
+        pollSCM('H/2 * * * *') // Poll GitHub every 2 minutes for new commits
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "Fetching latest source code from repository for ${STUDENT_NAME} (${REG_NO})..."
+                git branch: 'main', url: 'https://github.com/angulakshmi2008/jenkins-flask-demo.git'
+            }
+        }
+
+        stage('Build Image') {
+            steps {
+                echo "Building Docker container image: ${IMAGE}:${TAG}..."
+                sh 'docker build -t $IMAGE:$TAG .'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Executing automated unit tests with pytest inside test container..."
+                sh 'docker run --rm $IMAGE:$TAG pytest -q app/test_app.py'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying containerized application to staging/production port 5000..."
+                sh 'docker rm -f flask-app || true'
+                sh 'docker run -d --name flask-app -p 5000:5000 $IMAGE:$TAG'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline completed successfully: Application deployed and running on port 5000."
+        }
+        failure {
+            echo "Pipeline failed! Please check console output and test assertions."
+        }
+    }
+}
