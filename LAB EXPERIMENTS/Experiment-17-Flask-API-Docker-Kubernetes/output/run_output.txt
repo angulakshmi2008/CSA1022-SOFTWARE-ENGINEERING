@@ -1,0 +1,49 @@
+================================================================================
+EXPERIMENT 17: FLASK API DOCKER CONTAINERIZATION & KUBERNETES DEPLOYMENT
+STUDENT: Angulakshmi S | REGISTER NUMBER: 192524402
+================================================================================
+
+[1] TEST GET / (Home Endpoint):
+  * Status: 200 OK
+  * Response: {
+  "cluster_platform": "Kubernetes Pod",
+  "course": "CSA10 - Software Engineering",
+  "message": "Hello from Flask API on Kubernetes",
+  "reg_no": "192524402",
+  "status": "RUNNING",
+  "student": "Angulakshmi S"
+}
+
+[2] TEST GET /api/students (Student Directory):
+  * Status: 200 OK
+  * Initial Count: 3
+    - ID 1: Arun (CSE)
+    - ID 2: Divya (IT)
+    - ID 3: Angulakshmi S (AI & DS)
+
+[3] TEST POST /api/students (Add Record):
+  * Status: 201 CREATED
+  * Response: {
+  "message": "Student added successfully",
+  "student": {
+    "dept": "CSE",
+    "id": 4,
+    "name": "Kavitha M"
+  }
+}
+
+[4] TEST GET /health (Liveness & Readiness Probe Endpoint):
+  * Status: 200 OK
+  * Response: {
+  "service": "flask-api-service",
+  "status": "UP",
+  "version": "1.0"
+}
+
+================================================================================
+[5] KUBERNETES MANIFEST VALIDATION:
+  * Deployment manifest: True (940 bytes)
+  * Service manifest:    True (256 bytes)
+  * NodePort Target:      30007 (Forwarded to internal port 5000)
+  * Pod Replicas:         2 Replicas with Health Probes (/health)
+================================================================================
