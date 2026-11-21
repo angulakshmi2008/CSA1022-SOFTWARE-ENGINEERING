@@ -1,0 +1,7 @@
+Issue Key,Issue Type,Summary,Description,Priority,MoSCoW Category,Kano Category,Labels,Sprint,Status
+OLP-1,Story,Course Enrollment and Registration,"Allow learners to register, browse catalog, and enroll in available courses.",Highest,Must Have,Basic,MoSCoW-Must Kano-Basic MVP,Sprint 1,To Do
+OLP-2,Story,Video Lecture Streaming,"Provide adaptive bitrate video streaming player with playback controls and speed adjustment.",Highest,Must Have,Performance,MoSCoW-Must Kano-Performance Core,Sprint 1,To Do
+OLP-3,Story,Interactive Quizzes and Assignments,"Enable learners to attempt module quizzes, submit assignments, and view automated scores.",High,Should Have,Performance,MoSCoW-Should Kano-Performance Assessment,Sprint 1,To Do
+OLP-4,Story,Progress Tracking Dashboard,"Visual dashboard showing course completion percentage, upcoming deadlines, and study streaks.",High,Should Have,Performance,MoSCoW-Should Kano-Performance Analytics,Sprint 1,To Do
+OLP-5,Story,Peer-to-Peer Discussion Forums,"Collaborative forum for learners and instructors to ask questions, upvote answers, and discuss topics.",Medium,Could Have,Excitement,MoSCoW-Could Kano-Excitement Community,Sprint 1,To Do
+OLP-6,Story,Certificate Generation,"Automated generation and verification of course completion certificates with verifiable QR codes.",Medium,Could Have,Excitement,MoSCoW-Could Kano-Excitement Delight,Sprint 1,To Do

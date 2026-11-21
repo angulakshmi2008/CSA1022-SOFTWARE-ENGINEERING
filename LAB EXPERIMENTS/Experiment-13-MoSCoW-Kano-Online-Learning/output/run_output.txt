@@ -1,0 +1,37 @@
+=====================================================================================
+EXPERIMENT 13: ONLINE LEARNING PLATFORM REQUIREMENTS PRIORITIZATION
+STUDENT: Angulakshmi S | REGISTER NUMBER: 192524402
+=====================================================================================
+
+[1] REQUIREMENT ANALYSIS MATRIX (MoSCoW vs. KANO):
+
+Key     | Requirement Title                      | MoSCoW       | Kano         | SP  | Sprint
+-------------------------------------------------------------------------------------
+OLP-1   | Course Enrollment and Registration     | Must Have    | Basic        | 5   | Sprint 1 (MVP)
+OLP-2   | Video Lecture Streaming                | Must Have    | Performance  | 8   | Sprint 1 (MVP)
+OLP-3   | Interactive Quizzes and Assignments    | Should Have  | Performance  | 5   | Sprint 1 (Targeted)
+OLP-4   | Progress Tracking Dashboard            | Should Have  | Performance  | 5   | Sprint 1 (Targeted)
+OLP-5   | Peer-to-Peer Discussion Forums         | Could Have   | Excitement   | 5   | Sprint 2 (Enhancement)
+OLP-6   | Certificate Generation                 | Could Have   | Excitement   | 3   | Sprint 2 (Enhancement)
+
+=====================================================================================
+[2] SPRINT PLANNING BREAKDOWN:
+
+- SPRINT 1 (MVP Delivery - Must & High Shoulds):
+  * [OLP-1] Course Enrollment and Registration (5 pts) -> MoSCoW: Must Have, Kano: Basic
+  * [OLP-2] Video Lecture Streaming (8 pts) -> MoSCoW: Must Have, Kano: Performance
+  * [OLP-3] Interactive Quizzes and Assignments (5 pts) -> MoSCoW: Should Have, Kano: Performance
+  * [OLP-4] Progress Tracking Dashboard (5 pts) -> MoSCoW: Should Have, Kano: Performance
+  Total Sprint 1 Story Points: 23 pts
+
+- SPRINT 2 (Enhancement & Delight - Coulds):
+  * [OLP-5] Peer-to-Peer Discussion Forums (5 pts) -> MoSCoW: Could Have, Kano: Excitement
+  * [OLP-6] Certificate Generation (3 pts) -> MoSCoW: Could Have, Kano: Excitement
+  Total Sprint 2 Story Points: 8 pts
+
+=====================================================================================
+[3] DUAL-FRAMEWORK STRATEGY SUMMARY:
+  * MoSCoW governs immediate release feasibility (Must = Non-negotiable, Should = High value).
+  * Kano governs user satisfaction and adoption dynamics (Basic = Baseline trust, Performance = Quality, Excitement = Delighters).
+  * The unified roadmap ensures the MVP is reliable (Basic), competitive (Performance), and primed for viral retention (Excitement).
+=====================================================================================
