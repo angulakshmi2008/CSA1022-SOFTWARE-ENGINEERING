@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Management System - Kubernetes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        header {
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        h1 {
+            color: #0056b3;
+            margin: 0 0 10px 0;
+        }
+        .badges {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .badge {
+            background: #e7f1ff;
+            color: #0056b3;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background-color: #0056b3;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>College Student Portal</h1>
+            <p>Multi-Container Kubernetes Cluster Deployment with Autoscaling</p>
+            <div class="badges">
+                <span class="badge">Tier 1: Nginx Frontend (NodePort 30080)</span>
+                <span class="badge">Tier 2: Flask API (ClusterIP 5000)</span>
+                <span class="badge">Tier 3: MySQL 8.0 (ClusterIP 3306)</span>
+            </div>
+        </header>
+
+        <h2>Enrolled Students Record</h2>
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Student Name</th>
+                    <th>Department</th>
+                </tr>
+            </thead>
+            <tbody id="studentBody">
+                <tr>
+                    <td>1</td>
+                    <td>Angulakshmi S</td>
+                    <td>CSE - AI & Data Science (192524402)</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Priya Sharma</td>
+                    <td>Information Technology</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Rahul Kumar</td>
+                    <td>Computer Science & Engineering</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="footer">
+            <p><strong>Student:</strong> Angulakshmi S (Reg: 192524402)</p>
+            <p>Saveetha School of Engineering, SIMATS | CSA10 Software Engineering Lab</p>
+        </div>
+    </div>
+
+    <script>
+        // Fetch dynamically from backend API reverse proxied via Nginx
+        fetch('/api/students')
+            .then(res => res.json())
+            .then(data => {
+                const list = Array.isArray(data) ? data : (data.data || []);
+                if (list.length > 0) {
+                    const tbody = document.getElementById('studentBody');
+                    tbody.innerHTML = '';
+                    list.forEach(s => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `<td>${s.id}</td><td>${s.name}</td><td>${s.dept}</td>`;
+                        tbody.appendChild(tr);
+                    });
+                }
+            })
+            .catch(err => console.log('Using static fallback records.'));
+    </script>
+</body>
+</html>
