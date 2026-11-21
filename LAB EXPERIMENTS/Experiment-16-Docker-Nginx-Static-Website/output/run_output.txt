@@ -1,0 +1,35 @@
+================================================================================
+EXPERIMENT 16: STATIC WEBSITE AND NGINX CONTAINERIZATION VERIFICATION
+STUDENT: Angulakshmi S | REGISTER NUMBER: 192524402
+================================================================================
+
+[1] VERIFYING STATIC ARTEFACTS:
+  * index.html exists: True (1883 bytes)
+  * style.css exists:  True (1624 bytes)
+  * Dockerfile exists: True (419 bytes)
+
+[2] DOCKERFILE CONFIGURATION:
+  -> FROM nginx:alpine
+  -> RUN rm -rf /usr/share/nginx/html/*
+  -> COPY src/index.html src/style.css /usr/share/nginx/html/
+  -> EXPOSE 80
+  -> CMD ["nginx", "-g", "daemon off;"]
+
+[3] TESTING LOCAL ASSET SERVING AT: http://127.0.0.1:8080/index.html
+  * HTTP Response Status: 200 OK
+  * Content-Type:         text/html
+  * Body Size:             1881 characters
+  * Verified Title:        'My Static Website - Docker & Nginx' present: True
+  * Verified Student Name: 'Angulakshmi S' present: True
+  * Verified Reg Number:   '192524402' present: True
+  * Saved response to:    C:\Users\ANGULAKSHMI SUBBURAJ\Downloads\CSA1022-SOFTWARE-ENGINEERING\LAB EXPERIMENTS\Experiment-16-Docker-Nginx-Static-Website\output\curl_response.html
+
+================================================================================
+[4] DOCKER EXECUTION COMMAND REFERENCE:
+  1. Build Image:     docker build -t static-site:1.0 .
+  2. Verify Image:    docker images static-site
+  3. Run Container:   docker run -d --name mysite -p 8080:80 static-site:1.0
+  4. Inspect Status:  docker ps
+  5. Verify HTTP:     curl http://localhost:8080
+  6. Clean Up:        docker stop mysite && docker rm mysite
+================================================================================

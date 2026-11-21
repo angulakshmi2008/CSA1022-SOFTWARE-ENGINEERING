@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Static Website - Docker & Nginx</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Static Website</h1>
+        <p class="subtitle">Containerized and Served with Docker and Nginx</p>
+    </header>
+    <main>
+        <section class="card">
+            <h2>Academic Details</h2>
+            <ul>
+                <li><strong>Student Name:</strong> Angulakshmi S</li>
+                <li><strong>Register Number:</strong> 192524402</li>
+                <li><strong>Course:</strong> CSA10 - Software Engineering</li>
+                <li><strong>Department:</strong> AI & Data Science / Computer Science and Engineering</li>
+                <li><strong>Institution:</strong> Saveetha School of Engineering, SIMATS</li>
+                <li><strong>Experiment:</strong> Experiment 16 – Static Website Containerized with Docker and Nginx</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>Container Architecture</h2>
+            <p>This static website is deployed using the lightweight <code>nginx:alpine</code> image. Nginx is configured to serve web assets from <code>/usr/share/nginx/html</code> over HTTP port 80, mapped to host port 8080.</p>
+            <div class="badge-container">
+                <span class="badge">Docker</span>
+                <span class="badge">Nginx Alpine</span>
+                <span class="badge">HTML5</span>
+                <span class="badge">CSS3</span>
+                <span class="badge">Port 8080:80</span>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 Saveetha School of Engineering | CSA10 Software Engineering Laboratory</p>
+    </footer>
+</body>
+</html>
