@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    actor Attacker as Student User (Charlie)
+    participant API as /api/v1/approvals Endpoint
+    participant Auth as RBAC Authorization Filter
+    participant DB as SQLite Persistent DB
+    participant Audit as AuditLog Table
+
+    Note over Attacker,Audit: Test Scenario I3: Student Attempts Restricted Booking Approval
+    Attacker->>API: POST /api/v1/approvals/bookings/1 (approved=true)
+    Note over API: Direct API Call with Valid Student JWT
+    API->>Auth: Evaluate can_approve_booking(user)
+    Note over Auth: User Role is STUDENT<br/>Allowed Roles: ADMIN, FACILITY_MANAGER, APPROVER
+    Auth-->>API: PermissionError: Student lacks required permissions
+    API-->>Attacker: HTTP 403 Forbidden
+    
+    Note over DB,Audit: Integrity Verification
+    Note over DB: Booking status remains PENDING_APPROVAL
+    Note over DB: approved_by_user_id remains NULL
+    Note over Audit: No unauthorized approval audit log appended

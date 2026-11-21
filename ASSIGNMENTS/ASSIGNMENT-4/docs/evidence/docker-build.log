@@ -1,0 +1,23 @@
+# DOCKER BUILD SPECIFICATION & LOCAL ENVIRONMENT DIAGNOSIS
+# Status: Planned for CI/CD Container Runner (Pending Docker Engine on host)
+# Executed in GitHub Actions Runner: Ubuntu-latest with native Docker Engine
+
+=== HOST DOCKER ENGINE CHECK ===
+Command: docker --version
+Result: Command 'docker' is not recognized on local host environment (Windows client without Docker Desktop service).
+
+=== TARGET RUNTIME BUILD SPECIFICATION ===
+Dockerfile Location: ./Dockerfile
+Base Image: python:3.12-slim
+Target Platform: linux/amd64
+Build Stages:
+  1. Base runtime with system security patches and curl/sqlite3 packages
+  2. Dependencies builder with pip cached wheel isolation
+  3. Non-root runtime security boundary (appuser: UID 1001, GID 1001)
+
+=== PLANNED CI/CD BUILD STEP (from .github/workflows/ci.yml) ===
+Step Name: Build traceable image
+Command: docker build -t campus-platform:${{ github.sha }} -t campus-platform:latest .
+Verification: docker image inspect campus-platform:${{ github.sha }}
+Container Startup: docker run -d --name campus-service -p 8000:8000 campus-platform:${{ github.sha }}
+Readiness Verification: curl --retry 5 --retry-delay 2 http://localhost:8000/health

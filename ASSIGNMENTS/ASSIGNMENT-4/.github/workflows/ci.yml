@@ -1,0 +1,179 @@
+name: Smart Campus Facility Platform CI/CD Delivery Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+  security-events: write
+
+jobs:
+  # =========================================================================
+  # Gate 1: Code Quality, Linting & Formatting
+  # =========================================================================
+  lint:
+    name: Code Quality & Linting Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Linting Tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff
+
+      - name: Execute Ruff Validation
+        run: ruff check app tests
+
+  # =========================================================================
+  # Gate 2: Layered Automated Testing (Unit, Integration, Regression)
+  # =========================================================================
+  test:
+    name: Automated Testing & Coverage Gate
+    needs: [lint]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Application & Test Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Execute Layered Test Suite (Unit, Integration, Regression)
+        run: |
+          python -m pytest tests -v \
+            --cov=app \
+            --cov-report=xml:test-coverage.xml \
+            --cov-report=term \
+            --junitxml=test-results.xml
+
+      - name: Upload Test Results & Coverage Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-and-coverage-reports
+          path: |
+            test-results.xml
+            test-coverage.xml
+          retention-days: 14
+
+  # =========================================================================
+  # Gate 3: Security & Dependency Vulnerability Scanning
+  # =========================================================================
+  security:
+    name: Security & Vulnerability Scan Gate
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Security Tools
+        run: |
+          pip install bandit pip-audit
+
+      - name: Execute Bandit Static Security Analysis
+        run: |
+          bandit -r app -f json -o security-scan.json || true
+          cat security-scan.json
+
+      - name: Execute Dependency Audit Scan
+        run: |
+          pip-audit -r requirements.txt -f json -o dependency-audit.json || true
+          cat dependency-audit.json
+
+      - name: Upload Security Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-reports
+          path: |
+            security-scan.json
+            dependency-audit.json
+          retention-days: 14
+
+  # =========================================================================
+  # Gate 4: Package Traceable Container Image
+  # =========================================================================
+  package:
+    name: Traceable Container Build Gate
+    needs: [security]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Build Traceable Container Image
+        run: |
+          docker build \
+            --tag campus-platform:${{ github.sha }} \
+            --tag campus-platform:latest .
+
+      - name: Verify Image Provenance and Metadata
+        run: |
+          docker image inspect campus-platform:${{ github.sha }} > image-metadata.json
+
+      - name: Upload Image Metadata Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: container-image-metadata
+          path: image-metadata.json
+          retention-days: 14
+
+  # =========================================================================
+  # Gate 5: Deployment Smoke Verification in Isolated Runner Container
+  # =========================================================================
+  deploy-smoke:
+    name: Deployment & Readiness Smoke Test Gate
+    needs: [package]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Start Isolated Container Instance
+        run: |
+          docker run -d \
+            --name campus-service \
+            -p 8000:8000 \
+            -e ENVIRONMENT=staging \
+            campus-platform:${{ github.sha }}
+
+      - name: Verify Service Readiness Probe
+        run: |
+          timeout 60 bash -c 'until curl -sf http://localhost:8000/health; do sleep 2; done'
+
+      - name: Execute Authenticated Smoke Test Journey
+        run: |
+          curl -sf http://localhost:8000/api/v1/sensors/threshold-check?value=28.00 | grep '"breached":false'
+          curl -sf http://localhost:8000/api/v1/sensors/threshold-check?value=28.01 | grep '"breached":true'
+
+      - name: Teardown Isolated Container
+        if: always()
+        run: |
+          docker stop campus-service || true
+          docker rm campus-service || true

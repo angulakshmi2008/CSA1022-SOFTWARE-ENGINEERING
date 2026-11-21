@@ -1,0 +1,47 @@
+[project]
+name = "smart-campus-facility-platform"
+version = "2.1.0"
+description = "Smart Campus Facility and Maintenance Platform - SE Assignment 4 (CO4)"
+authors = [
+    {name = "ANGULAKSHMI S", email = "angulakshmi2008@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn>=0.30.0",
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.13.0",
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.2.0",
+    "pyjwt>=2.8.0",
+    "bcrypt>=4.1.0",
+    "python-multipart>=0.0.9",
+    "httpx>=0.27.0",
+    "python-dotenv>=1.0.0",
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-q --tb=short"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "I"]
+ignore = ["E501", "B008"]
+
+[tool.coverage.run]
+source = ["app"]
+omit = [
+    "app/integrations/*",
+    "*/__init__.py"
+]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80

@@ -1,0 +1,42 @@
+graph TD
+    subgraph Clients["Client Layer"]
+        Web[Web Browser Portal]
+        Mobile[Mobile Campus App]
+        Sensors[IoT Sensors & Telemetry Devices]
+    end
+
+    subgraph API_Gateway["API & Security Boundary"]
+        Router[FastAPI Application Gateway]
+        Auth[JWT Authentication & RBAC Filter]
+        CORS[CORS Middleware & Rate Limiter]
+    end
+
+    subgraph Core_Services["Domain Services Layer"]
+        BookingSvc[Booking Service & Duration Policy]
+        SensorSvc[Sensor Processing & Threshold Check]
+        TicketSvc[Ticket Lifecycle & State Machine]
+        ApprovalSvc[Elevated Approval Service]
+        SLASvc[SLA Calculation & Injectable Clock]
+        SyncSvc[Transactional Outbox Worker]
+    end
+
+    subgraph Persistence["Persistence & Database Layer"]
+        DB[(SQLite / PostgreSQL Engine)]
+        T_Users[users table]
+        T_Fac[facilities & policies table]
+        T_Book[bookings table]
+        T_Ticket[maintenance_tickets table]
+        T_Audit[audit_logs immutable table]
+        T_Outbox[outbox_events queue]
+    end
+
+    subgraph External["External Campus Dependencies"]
+        CalSync[University Calendar Service Exchange/Google]
+        JiraSync[Developer Issue Tracker Jira/GitLab]
+    end
+
+    Clients --> Router
+    Router --> Auth
+    Auth --> Core_Services
+    Core_Services --> DB
+    SyncSvc --> External

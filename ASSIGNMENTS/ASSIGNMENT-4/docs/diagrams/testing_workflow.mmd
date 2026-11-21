@@ -1,0 +1,29 @@
+flowchart LR
+    subgraph Unit["Layer 1: Unit Testing (Fast, Isolated, In-Memory)"]
+        U1["U1: Priority High/High -> M1"]
+        U2["U2: Priority Low/Low -> M4"]
+        U3["U3: Invalid Priority Rejection"]
+        U4["U4: Water Leak -> Facilities"]
+        U5["U5: Equal Evidence -> Manual Review"]
+        U6["U6: Sensor 28.00 False, 28.01 True"]
+    end
+
+    subgraph Integration["Layer 2: Integration Testing (DB, Endpoints, RBAC)"]
+        I1["I1: Ticket Lifecycle New->Closed & 5 Audits"]
+        I2["I2: 5 Identical Events -> 1 DB Event, 1 Ticket"]
+        I3["I3: Student Restricted Approval -> 403 Forbidden"]
+        I4["I4: Overlapping Rejected, Adjacent Accepted"]
+    end
+
+    subgraph Regression["Layer 3: Regression Testing (Safety Baseline)"]
+        R1["R1: High/Medium -> M2 Priority"]
+        R2["R2: Unknown Terminology -> Manual Review"]
+        R3["R3: Resolve Without Notes -> Rejected"]
+        R4["R4: Stale Ticket Version -> 409 Conflict"]
+    end
+
+    Unit --> Integration
+    Integration --> Regression
+    Regression --> GateVerification{All 40 Checks Pass & Coverage >= 80%?}
+    GateVerification -- Yes --> PackageArtifact[Proceed to Package & Deploy]
+    GateVerification -- No --> AbortPipeline[Fail CI/CD & Block Delivery]

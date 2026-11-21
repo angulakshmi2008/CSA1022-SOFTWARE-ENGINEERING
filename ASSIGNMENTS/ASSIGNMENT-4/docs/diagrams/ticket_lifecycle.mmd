@@ -1,0 +1,27 @@
+stateDiagram-v2
+    [*] --> New: Ticket Created (Manual or Sensor Alert)
+    
+    New --> Assigned: Assign Technician (Expected v1 -> v2)
+    New --> Rejected: Invalid Transition Blocked
+    
+    Assigned --> In_Progress: Technician Begins Work (Expected v2 -> v3)
+    Assigned --> Closed: Invalid Transition Blocked
+    
+    In_Progress --> Resolved: Work Completed WITH Resolution Notes (Expected v3 -> v4)
+    In_Progress --> In_Progress: Attempt Resolve WITHOUT Notes (Rejected)
+    
+    Resolved --> Closed: Verification & Closure by Manager (Expected v4 -> v5)
+    Resolved --> In_Progress: Invalid Transition Blocked
+    
+    Closed --> [*]: Terminal State
+
+    note right of In_Progress
+      Resolution notes are strictly mandatory.
+      Empty notes preserve 'In Progress' state.
+    end note
+
+    note left of New
+      Optimistic lock check:
+      expected_version == ticket.version
+      Mismatch returns 409 Conflict.
+    end note

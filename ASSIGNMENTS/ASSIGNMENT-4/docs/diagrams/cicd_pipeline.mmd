@@ -1,0 +1,19 @@
+flowchart TD
+    GitPush([Git Push / PR to main]) --> Checkout[Stage 1: Checkout Source Code]
+    Checkout --> SetupPy[Stage 2: Setup Python 3.12]
+    SetupPy --> LintGate{Gate 1: Ruff Linting}
+    
+    LintGate -- Fails --> Block1[Halt Pipeline: Reject Pull Request]
+    LintGate -- Passes --> TestGate{Gate 2: Layered Pytest & Coverage}
+    
+    TestGate -- Fails --> Block2[Halt Pipeline: Upload test-results.xml]
+    TestGate -- "Passes (40/40, Cov >= 80%)" --> SecGate{Gate 3: Bandit & Pip-Audit Scan}
+    
+    SecGate -- Critical Found --> Block3[Halt Pipeline: Security Gate Violation]
+    SecGate -- Clean --> DockerBuild[Stage 4: Build Docker Image]
+    
+    DockerBuild --> TagCommit[Tag Image with Git Commit SHA]
+    TagCommit --> DeploySmoke{Gate 4: Isolated Runner Container & Smoke Journey}
+    
+    DeploySmoke -- Health Fails --> Rollback[Halt Pipeline: Abort Release]
+    DeploySmoke -- Passes --> ReleaseReady([Release Approved: Ready for Staging/Prod Deployment])

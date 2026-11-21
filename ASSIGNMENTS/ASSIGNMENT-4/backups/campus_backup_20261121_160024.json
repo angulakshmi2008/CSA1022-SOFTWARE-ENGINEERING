@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-11-21T16:00:24.763494+00:00",
+  "backup_file": "campus_backup_20261121_160024.db",
+  "source_file": "smart_campus.db",
+  "table_row_counts": {
+    "users": 0,
+    "facilities": 0,
+    "bookings": 0,
+    "maintenance_tickets": 0,
+    "audit_logs": 0,
+    "outbox_events": 0
+  }
+}

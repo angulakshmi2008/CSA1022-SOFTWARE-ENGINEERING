@@ -1,0 +1,23 @@
+flowchart TD
+    Start([Booking Request Received]) --> AuthCheck{Is User Authenticated?}
+    AuthCheck -- No --> Ret401[Return 401 Unauthorized]
+    AuthCheck -- Yes --> TimeVal{Start < End?}
+    TimeVal -- No --> Ret400_Time[Return 400: End Must Be After Start]
+    
+    TimeVal -- Yes --> DurationVal{"Duration <= Max Duration Limit? (180 min default)"}
+    DurationVal -- "No (> 180 min)" --> Ret400_Dur["Return 400: Duration Exceeds Limit (181m rejected)"]
+    
+    DurationVal -- "Yes (<= 180 min)" --> OverlapCheck{"Overlaps Active Booking? (Start1 < End2 and Start2 < End1)"}
+    OverlapCheck -- Yes --> Ret409["Return 409 Conflict: Interval Overlaps Existing Reservation"]
+    
+    OverlapCheck -- No --> CheckAdjacent{"Adjacent Booking? (End1 == Start2)"}
+    CheckAdjacent -- Yes --> ProceedSave["Permitted Adjacent Interval"]
+    CheckAdjacent -- No --> ProceedSave
+    
+    ProceedSave --> CheckRestricted{Is Facility Restricted?}
+    CheckRestricted -- Yes --> SetPending["Status = PENDING_APPROVAL"]
+    CheckRestricted -- No --> SetConfirmed["Status = CONFIRMED"]
+    
+    SetPending --> PersistDB[Commit Transaction: Booking + Audit + Outbox]
+    SetConfirmed --> PersistDB
+    PersistDB --> Return201([Return 201 Created])

@@ -1,0 +1,25 @@
+sequenceDiagram
+    autonumber
+    participant App as Core Service (Booking/Ticket)
+    participant LocalDB as Local SQLite DB (Outbox Table)
+    participant Worker as Outbox Synchronization Worker
+    participant Ext as External Service (Calendar/Jira)
+
+    Note over App,Ext: Atomic Local Transaction
+    App->>LocalDB: INSERT Booking/Ticket (Committed)
+    App->>LocalDB: INSERT OutboxEvent (Status: PENDING)
+    LocalDB-->>App: Commit Confirmed (201 Created)
+    Note over App: Client receives instant success. Local state is durable!
+
+    Note over Worker,Ext: Asynchronous Outbox Delivery Attempt 1
+    Worker->>LocalDB: SELECT PENDING outbox events
+    Worker->>Ext: POST /calendar/events or /jira/issue
+    Ext-->>Worker: HTTP 503 Service Unavailable / Connection Timeout
+    Note over Worker: NEVER mark failed event as SENT!
+    Worker->>LocalDB: UPDATE OutboxEvent (Status: RETRYING, retry_count=1)
+
+    Note over Worker,Ext: Scheduled Retry Attempt 2 (Exponential Backoff)
+    Worker->>LocalDB: SELECT RETRYING outbox events
+    Worker->>Ext: POST /calendar/events with Idempotency Key
+    Ext-->>Worker: HTTP 200 OK (Event Registered)
+    Worker->>LocalDB: UPDATE OutboxEvent (Status: SENT, error=NULL)

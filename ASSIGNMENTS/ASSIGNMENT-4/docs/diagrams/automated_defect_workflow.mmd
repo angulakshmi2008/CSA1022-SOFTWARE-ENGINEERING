@@ -1,0 +1,30 @@
+sequenceDiagram
+    autonumber
+    participant Dev as Engineer / CI Runner
+    participant Suite as Pytest Suite
+    participant App as Application Core
+    participant Log as docs/evidence/ Logs
+
+    Note over Dev,Log: Normal Baseline Execution
+    Dev->>Suite: Run test suite
+    Suite->>App: Evaluate U1..U6, I1..I4, R1..R4
+    App-->>Suite: 40/40 Checks Pass (83.55% Coverage)
+    Suite-->>Dev: Green Pipeline Exit Code 0
+
+    Note over Dev,Log: Controlled Defect 1: Sensor Threshold Operator (>= instead of >)
+    Dev->>App: Inject Defect 1 (value >= threshold)
+    Dev->>Suite: Run U6 (test_sensor.py)
+    App-->>Suite: Returns (True, True) instead of (False, True)
+    Suite->>Log: Capture FAILED log: True != False (defect-1-failure.txt)
+    Dev->>App: Correct operator back to strict '>'
+    Dev->>Suite: Retest U6
+    Suite-->>Log: Capture PASSING log (defect-1-correction.txt)
+
+    Note over Dev,Log: Controlled Defect 2: Priority Mapping (High/High -> M2)
+    Dev->>App: Inject Defect 2 (PRIORITY_MATRIX High/High -> M2)
+    Dev->>Suite: Run U1 (test_priority.py)
+    App-->>Suite: Returns 'M2' instead of 'M1'
+    Suite->>Log: Capture FAILED log: assert 'M2' == 'M1' (defect-2-failure.txt)
+    Dev->>App: Correct mapping back to 'M1'
+    Dev->>Suite: Retest U1
+    Suite-->>Log: Capture PASSING log (defect-2-correction.txt)

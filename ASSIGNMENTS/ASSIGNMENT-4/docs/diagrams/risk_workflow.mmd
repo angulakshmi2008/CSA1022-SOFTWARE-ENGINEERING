@@ -1,0 +1,22 @@
+flowchart TD
+    Start([Requirement & Scope Definition]) --> IdentifyRisks[Identify Operational & Security Risks]
+    IdentifyRisks --> RankRisks["Rank Risks: Likelihood × Impact Ordinal Score"]
+    
+    RankRisks --> R1["Risk 1: Duplicate Sensor Events (4×4=16)"]
+    RankRisks --> R2["Risk 2: Overlapping Booking Accepted (3×5=15)"]
+    RankRisks --> R3["Risk 3: Unauthorized Restricted Approval (3×5=15)"]
+    RankRisks --> R4["Risk 4: Incorrect Threshold or SLA Boundary (3×4=12)"]
+    RankRisks --> R5["Risk 5: UI Starts but API Fails (3×4=12)"]
+    RankRisks --> R6["Risk 6: Migration Loses History (2×5=10)"]
+
+    R1 --> Mitigate[Define Automated Quality Gates & Oracles]
+    R2 --> Mitigate
+    R3 --> Mitigate
+    R4 --> Mitigate
+    R5 --> Mitigate
+    R6 --> Mitigate
+
+    Mitigate --> LayeredTests[Execute Unit, Integration, Regression Tests]
+    LayeredTests --> Decision{All Gates Pass?}
+    Decision -- Yes --> ReleaseAccepted([Release Approved for Staging/Production])
+    Decision -- No --> BlockRelease([Release Blocked: Halt Delivery & Revert])

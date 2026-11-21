@@ -1,0 +1,15 @@
+[2026-11-21 16:00:17 UTC] === STARTING DATABASE MIGRATION REHEARSAL (Q6) ===
+[2026-11-21 16:00:17 UTC] Step 1: Applying initial migration 001_initial_schema...
+[2026-11-21 16:00:18 UTC] -> Alembic 001 return code: 1
+[2026-11-21 16:00:18 UTC] Step 2: Seeded pre-migration synthetic records:
+[2026-11-21 16:00:18 UTC]   -> 1 User, 1 Facility, 1 Booking, 1 Ticket, 1 AuditLog
+[2026-11-21 16:00:18 UTC] Step 3: Executing schema migration 002 (Adding facility_policies table and policy reference)...
+[2026-11-21 16:00:18 UTC] -> Migration 002 applied successfully in batch mode
+[2026-11-21 16:00:18 UTC] Step 4: Running post-migration validation checks...
+[2026-11-21 16:00:18 UTC]   -> PRAGMA integrity_check: ok (Expected 'ok')
+[2026-11-21 16:00:18 UTC]   -> PRAGMA foreign_key_check violations: 0 (Expected 0)
+[2026-11-21 16:00:18 UTC]   -> Historical booking preserved: count=1 (Expected 1)
+[2026-11-21 16:00:18 UTC]   -> Historical ticket preserved: count=1 (Expected 1)
+[2026-11-21 16:00:18 UTC]   -> Historical audit trail preserved: count=1 (Expected 1)
+[2026-11-21 16:00:18 UTC]   -> Multi-campus policies active: [('Main Campus', 180, 28.0), ('North Campus', 120, 26.0)]
+[2026-11-21 16:00:18 UTC] === MIGRATION REHEARSAL COMPLETED WITH ZERO INTEGRITY DEFECTS ===

@@ -1,0 +1,16 @@
+flowchart TD
+    ReqChange([Requirement Change: Campus-Specific Policies & Revised API]) --> ImpactAnalysis[Perform Change-Impact Diagnosis]
+    ImpactAnalysis --> DefineMigration[Author Alembic Migration 002: facility_policies & policy_id]
+    
+    DefineMigration --> Rehearsal[Execute scripts/verify_migration.py on Staging Clone]
+    Rehearsal --> PreSeed[Seed Pre-Migration Bookings, Tickets, and Audit Records]
+    PreSeed --> RunAlembic[Execute Alembic Upgrade Head]
+    
+    RunAlembic --> CheckIntegrity{Verify Data Integrity}
+    CheckIntegrity -- "Data Loss or FK Error" --> Abort[Halt Migration & Restore Pre-Migration Snapshot]
+    CheckIntegrity -- "100% History Preserved" --> VerifyAPICompat{Verify API v1 & v2 Compatibility}
+    
+    VerifyAPICompat -- v1 Broken --> FixAdapter[Maintain v1 Contract via Default Policy]
+    VerifyAPICompat -- v1 & v2 Green --> RunRegression[Run Full Regression Suite: test_policy_regression.py]
+    
+    RunRegression --> ProductionMigration([Approve Production Migration Execution])
