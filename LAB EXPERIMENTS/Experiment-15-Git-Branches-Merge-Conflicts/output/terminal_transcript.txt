@@ -1,0 +1,170 @@
+================================================================================
+EXPERIMENT 15: GIT BRANCHES AND MERGE CONFLICT RESOLUTION
+STUDENT: Angulakshmi S | REGISTER NUMBER: 192524402
+ISOLATED LOCAL REPOSITORY SANDBOX EXECUTION TRANSCRIPT
+================================================================================
+
+
+$ git init --bare --initial-branch=main shared-repo.git
+Initialized empty Git repository in C:/Users/ANGULAKSHMI SUBBURAJ/AppData/Local/Temp/git_exp15_dw36qh1i/shared-repo.git/
+
+$ git clone shared-repo.git seed
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp15_dw36qh1i\seed'...
+warning: You appear to have cloned an empty repository.
+done.
+
+$ git add README.md
+
+$ git commit -m Initial commit with project README
+[main (root-commit) fb7aecf] Initial commit with project README
+ 1 file changed, 8 insertions(+)
+ create mode 100644 README.md
+
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp15_dw36qh1i\shared-repo.git
+ * [new branch]      main -> main
+
+$ git clone https://github.com/saveetha-se/shared-repo.git
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp15_dw36qh1i\student-local'...
+done.
+
+$ git branch -a
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/main
+
+$ git checkout -b feature-update
+Switched to a new branch 'feature-update'
+
+$ git branch
+* feature-update
+  main
+
+$ git status
+On branch feature-update
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git diff
+diff --git a/README.md b/README.md
+index f36e95a..569e860 100644
+--- a/README.md
++++ b/README.md
+@@ -4,5 +4,5 @@
+ This repository manages collaborative development for CSA10 Software Engineering.
+ 
+ ## Active Modules
+-- Base Framework
+-- Documentation
++- User Authentication (Angulakshmi S - 192524402)
++- Feature Branch Update Module (Optimized)
+
+$ git add README.md
+
+$ git commit -m Updated README on feature-update branch
+[feature-update 46cf05c] Updated README on feature-update branch
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+$ git push -u origin feature-update
+branch 'feature-update' set up to track 'origin/feature-update'.
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp15_dw36qh1i\shared-repo.git
+ * [new branch]      feature-update -> feature-update
+
+$ [Collaborator] Clone repository and commit conflicting change to main
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp15_dw36qh1i\collab-local'...
+done.
+
+$ git add README.md
+
+$ git commit -m Updated active modules list on main branch
+[main e3e9d86] Updated active modules list on main branch
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp15_dw36qh1i\shared-repo.git
+   fb7aecf..e3e9d86  main -> main
+
+$ git fetch origin
+From C:\Users\ANGULA~1\AppData\Local\Temp\git_exp15_dw36qh1i\shared-repo
+   fb7aecf..e3e9d86  main       -> origin/main
+
+$ git merge origin/main
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Automatic merge failed; fix conflicts and then commit the result.
+
+$ git status (showing CONFLICT)
+On branch feature-update
+Your branch is up to date with 'origin/feature-update'.
+
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+	both modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+--- Conflicted README.md Content with Markers ---
+# Shared Student Project
+
+## Overview
+This repository manages collaborative development for CSA10 Software Engineering.
+
+## Active Modules
+<<<<<<< HEAD
+- User Authentication (Angulakshmi S - 192524402)
+- Feature Branch Update Module (Optimized)
+=======
+- Core API Engine (Upstream Collaborator)
+- Main Branch Pipeline Integration
+>>>>>>> origin/main
+
+-------------------------------------------------
+
+$ git diff (showing resolved content before staging)
+diff --cc README.md
+index 569e860,90b8f15..0000000
+--- a/README.md
++++ b/README.md
+@@@ -4,5 -4,5 +4,6 @@@
+  This repository manages collaborative development for CSA10 Software Engineering.
+  
+  ## Active Modules
+- - User Authentication (Angulakshmi S - 192524402)
+- - Feature Branch Update Module (Optimized)
+ -- Core API Engine (Upstream Collaborator)
+ -- Main Branch Pipeline Integration
+++- User Authentication (Angulakshmi S - 192524402) [Feature Branch]
+++- Core API Engine (Upstream Collaborator) [Main Branch]
+++- Main Branch Pipeline Integration & Feature Module
+
+$ git add README.md
+
+$ git commit -m 'Resolved merge conflict'
+[feature-update 78ba11c] Resolved merge conflict
+
+$ git status (working tree clean)
+On branch feature-update
+Your branch is ahead of 'origin/feature-update' by 2 commits.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+
+$ git push origin feature-update
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp15_dw36qh1i\shared-repo.git
+   46cf05c..78ba11c  feature-update -> feature-update
+
+$ git log --graph --oneline --all
+*   78ba11c Resolved merge conflict
+|\  
+| * e3e9d86 Updated active modules list on main branch
+* | 46cf05c Updated README on feature-update branch
+|/  
+* fb7aecf Initial commit with project README
