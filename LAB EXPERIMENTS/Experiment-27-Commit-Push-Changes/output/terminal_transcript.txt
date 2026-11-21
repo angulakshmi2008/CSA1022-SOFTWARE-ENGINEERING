@@ -1,0 +1,121 @@
+# Initialize remote repository on GitHub
+$ git init --bare --initial-branch=main C:\Users\ANGULA~1\AppData\Local\Temp\git_exp27_sandbox\remote\My-Personal-Project.git
+Initialized empty Git repository in C:/Users/ANGULAKSHMI SUBBURAJ/AppData/Local/Temp/git_exp27_sandbox/remote/My-Personal-Project.git/
+
+# Seed initial repository on GitHub
+$ git clone C:\Users\ANGULA~1\AppData\Local\Temp\git_exp27_sandbox\remote\My-Personal-Project.git C:\Users\ANGULA~1\AppData\Local\Temp\git_exp27_sandbox\seed
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp27_sandbox\seed'...
+warning: You appear to have cloned an empty repository.
+done.
+
+$ git config user.name Angulakshmi S
+
+$ git config user.email angulakshmi2008@example.com
+
+$ git add README.md
+
+$ git commit -m Initial commit
+[main (root-commit) 61158f0] Initial commit
+ 1 file changed, 3 insertions(+)
+ create mode 100644 README.md
+
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp27_sandbox\remote\My-Personal-Project.git
+ * [new branch]      main -> main
+
+# Step 1: Clone repository locally
+$ git clone C:\Users\ANGULA~1\AppData\Local\Temp\git_exp27_sandbox\remote\My-Personal-Project.git C:\Users\ANGULA~1\AppData\Local\Temp\git_exp27_sandbox\local\My-Personal-Project
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp27_sandbox\local\My-Personal-Project'...
+done.
+
+$ git config user.name Angulakshmi S
+
+$ git config user.email angulakshmi2008@example.com
+
+# Step 2: Navigate and check clean status
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+
+# Step 4: Verify modified state (Changes not staged for commit)
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+# View unstaged diff
+$ git diff
+diff --git a/README.md b/README.md
+index 12f5504..254e3fc 100644
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,18 @@
+ # My-Personal-Project
+ 
+-Initial repository description.
++A personal software development repository demonstrating version control best practices using Git and GitHub.
++
++## Project Description
++This repository hosts utility scripts, algorithms, and documentation developed as part of the Software Engineering curriculum.
++
++## Experiment 27: Staged & Committed Changes
++- Updated README documentation with project objectives.
++- Staged modifications into the Git index.
++- Committed changes with message: Updated README.
++- Pushed commit to remote GitHub repository (origin/main).
++
++## Student Information
++- **Name:** Angulakshmi S
++- **Register Number:** 192524402
++- **Course:** CSA10 - Software Engineering Lab
++- **Institution:** Saveetha School of Engineering, SIMATS
+
+# Step 5: Stage changes into index (git add README.md)
+$ git add README.md
+
+# Verify staged state (Changes to be committed)
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   README.md
+
+# Step 6: Commit changes (git commit -m 'Updated README')
+$ git commit -m Updated README
+[main eeb59f2] Updated README
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+# Verify local commit ahead of origin/main by 1 commit
+$ git status
+On branch main
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+
+# Step 7: Push changes to remote (git push origin main)
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp27_sandbox\remote\My-Personal-Project.git
+   61158f0..eeb59f2  main -> main
+
+# Step 8: Verify working tree clean and synchronized
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+
+# Verify complete commit history graph
+$ git log --graph --oneline --all
+* eeb59f2 Updated README
+* 61158f0 Initial commit
