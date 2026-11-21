@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask To-Do Application - Docker</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: #ffffff;
+            max-width: 580px;
+            width: 100%;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid #2563eb;
+        }
+        header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        h2 {
+            margin: 0 0 6px 0;
+            color: #1e3a8a;
+        }
+        .meta {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        button:hover {
+            background-color: #1d4ed8;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        .task-title {
+            flex: 1;
+        }
+        .done-text {
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-done {
+            color: #059669;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 4px 8px;
+            border: 1px solid #059669;
+            border-radius: 4px;
+        }
+        .btn-delete {
+            color: #dc2626;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 4px 8px;
+            border: 1px solid #dc2626;
+            border-radius: 4px;
+        }
+        footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h2>My To-Do Application</h2>
+            <p class="meta">Containerized with Docker | <strong>{{ student_name }}</strong> ({{ reg_no }})</p>
+        </header>
+
+        <form action="/add" method="post">
+            <input type="text" name="task" placeholder="Enter a new task..." required>
+            <button type="submit">Add Task</button>
+        </form>
+
+        <ul>
+            {% for t in tasks %}
+            <li>
+                <span class="task-title {% if t.done %}done-text{% endif %}">
+                    {{ t.title }}
+                </span>
+                <div class="actions">
+                    {% if not t.done %}
+                    <a href="/done/{{ t.id }}" class="btn-done">Done</a>
+                    {% endif %}
+                    <a href="/delete/{{ t.id }}" class="btn-delete">Delete</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <footer>
+            CSA10 - Software Engineering | Saveetha School of Engineering
+        </footer>
+    </div>
+</body>
+</html>

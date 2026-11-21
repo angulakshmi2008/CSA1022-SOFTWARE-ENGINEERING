@@ -1,0 +1,46 @@
+================================================================================
+EXPERIMENT 21: FLASK TO-DO APPLICATION CONTAINERIZATION & FUNCTIONAL TEST
+STUDENT: Angulakshmi S | REGISTER NUMBER: 192524402
+================================================================================
+
+[1] TEST GET / (Web UI Rendering):
+  * Status: 200 OK
+  * Student Name Rendered: True
+  * Reg No Rendered:       True
+
+[2] TEST POST /add (Adding 3 Lab Tasks):
+  * Added Task: 'Complete SE record' -> HTTP 200
+  * Added Task: 'Prepare viva' -> HTTP 200
+  * Added Task: 'Submit assignment' -> HTTP 200
+
+[3] TEST GET /api/tasks (State After Additions):
+  * Total Tasks in List: 5
+    - ID 1: [PENDING] Complete SE Lab Experiments 4-30
+    - ID 2: [DONE] Review Software Engineering Viva Questions
+    - ID 3: [PENDING] Complete SE record
+    - ID 4: [PENDING] Prepare viva
+    - ID 5: [PENDING] Submit assignment
+
+[4] TEST GET /done/3 (Mark 'Complete SE record' as Done):
+  * Status: 200 Redirected
+
+[5] TEST GET /delete/4 (Delete Task ID 4):
+  * Status: 200 Redirected
+
+[6] TEST GET /api/tasks (Final Verified State):
+  * Final Task Count: 4
+    - ID 1: [PENDING] Complete SE Lab Experiments 4-30
+    - ID 2: [DONE] Review Software Engineering Viva Questions
+    - ID 3: [DONE] Complete SE record
+    - ID 5: [PENDING] Submit assignment
+
+================================================================================
+[7] DOCKER EXECUTION COMMAND REFERENCE:
+  1. Build Image:      docker build -t todo-app:1.0 .
+  2. Verify Image:     docker images todo-app
+  3. Run Container:    docker run -d --name todo -p 5000:5000 todo-app:1.0
+  4. Exec Inside Test: docker exec -it todo python -c "import urllib.request; print(urllib.request.urlopen('http://localhost:5000/api/tasks').read())"
+  5. Tag for Registry: docker tag todo-app:1.0 <dockerhub-username>/todo-app:1.0
+  6. Push Image:       docker push <dockerhub-username>/todo-app:1.0
+  7. Clean Up:         docker stop todo && docker rm todo
+================================================================================
