@@ -1,0 +1,91 @@
+# Initialize remote repository on GitHub
+$ git init --bare --initial-branch=main C:\Users\ANGULA~1\AppData\Local\Temp\git_exp29_sandbox\remote\portal_repo.git
+Initialized empty Git repository in C:/Users/ANGULAKSHMI SUBBURAJ/AppData/Local/Temp/git_exp29_sandbox/remote/portal_repo.git/
+
+# Seed base repository on GitHub
+$ git clone C:\Users\ANGULA~1\AppData\Local\Temp\git_exp29_sandbox\remote\portal_repo.git C:\Users\ANGULA~1\AppData\Local\Temp\git_exp29_sandbox\seed
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp29_sandbox\seed'...
+warning: You appear to have cloned an empty repository.
+done.
+
+$ git config user.name Angulakshmi S
+
+$ git config user.email angulakshmi2008@example.com
+
+$ git add README.md
+
+$ git commit -m Initial production baseline
+[main (root-commit) 4206b80] Initial production baseline
+ 1 file changed, 3 insertions(+)
+ create mode 100644 README.md
+
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp29_sandbox\remote\portal_repo.git
+ * [new branch]      main -> main
+
+# Step 1: Clone repository locally
+$ git clone C:\Users\ANGULA~1\AppData\Local\Temp\git_exp29_sandbox\remote\portal_repo.git C:\Users\ANGULA~1\AppData\Local\Temp\git_exp29_sandbox\local\portal_repo
+Cloning into 'C:\Users\ANGULA~1\AppData\Local\Temp\git_exp29_sandbox\local\portal_repo'...
+done.
+
+$ git config user.name Angulakshmi S
+
+$ git config user.email angulakshmi2008@example.com
+
+# Step 2: Create feature branch (feature-login)
+$ git checkout -b feature-login
+Switched to a new branch 'feature-login'
+
+# Verify current active branch is feature-login
+$ git branch
+* feature-login
+  main
+
+# Step 4: Check untracked files on feature-login branch
+$ git status
+On branch feature-login
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	src/
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+# Stage src/login.py
+$ git add src/login.py
+
+# Commit feature implementation
+$ git commit -m Added login feature
+[feature-login a54cf6e] Added login feature
+ 1 file changed, 59 insertions(+)
+ create mode 100644 src/login.py
+
+# Step 5: Push feature-login branch to GitHub
+$ git push -u origin feature-login
+branch 'feature-login' set up to track 'origin/feature-login'.
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp29_sandbox\remote\portal_repo.git
+ * [new branch]      feature-login -> feature-login
+
+# Step 6: Switch back to main branch for PR merge
+$ git checkout main
+Your branch is up to date with 'origin/main'.
+Switched to branch 'main'
+
+# Merge Pull Request #1 into main branch
+$ git merge --no-ff feature-login -m Merge pull request #1 from feature-login (Added login feature)
+Merge made by the 'ort' strategy.
+ src/login.py | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
+ create mode 100644 src/login.py
+
+# Push merged main branch to GitHub
+$ git push origin main
+To C:\Users\ANGULA~1\AppData\Local\Temp\git_exp29_sandbox\remote\portal_repo.git
+   4206b80..9c8b693  main -> main
+
+# Verify non-fast-forward merge commit and branch topology
+$ git log --graph --oneline --all
+*   9c8b693 Merge pull request #1 from feature-login (Added login feature)
+|\  
+| * a54cf6e Added login feature
+|/  
+* 4206b80 Initial production baseline
