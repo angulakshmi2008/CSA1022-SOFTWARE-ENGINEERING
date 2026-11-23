@@ -1,0 +1,122 @@
+<mxfile host="Electron" modified="2026-11-22T14:15:00.000Z" agent="Mozilla/5.0" version="21.6.8" type="device">
+  <diagram id="UseCase_Q3" name="E-Learning Use Case Diagram">
+    <mxGraphModel dx="1200" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- System Boundary Box -->
+        <mxCell id="system_boundary" value="&lt;b&gt;E-Learning Platform&lt;/b&gt;" style="shape=rect;rounded=0;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#475569;strokeWidth=2;verticalAlign=top;align=center;fontSize=14;fontColor=#0F172A;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="220" y="40" width="680" height="740" as="geometry" />
+        </mxCell>
+
+        <!-- Primary Actors (Left Side) -->
+        <!-- Student -->
+        <mxCell id="actor_student" value="Student" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#DBEAFE;strokeColor=#1D4ED8;strokeWidth=2;fontStyle=1;fontColor=#1E3A8A;" vertex="1" parent="1">
+          <mxGeometry x="60" y="240" width="50" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Instructor -->
+        <mxCell id="actor_instructor" value="Instructor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#D1FAE5;strokeColor=#047857;strokeWidth=2;fontStyle=1;fontColor=#064E3B;" vertex="1" parent="1">
+          <mxGeometry x="60" y="490" width="50" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Administrator -->
+        <mxCell id="actor_admin" value="Administrator" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FEF3C7;strokeColor=#B45309;strokeWidth=2;fontStyle=1;fontColor=#78350F;" vertex="1" parent="1">
+          <mxGeometry x="60" y="660" width="50" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- External Actor (Right Side) -->
+        <mxCell id="actor_payment_gw" value="&amp;laquo;actor&amp;raquo;&lt;br&gt;&amp;laquo;system&amp;raquo;&lt;br&gt;&lt;b&gt;External Payment Gateway&lt;/b&gt;" style="shape=rect;rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#78350F;verticalAlign=middle;align=center;" vertex="1" parent="1">
+          <mxGeometry x="960" y="270" width="160" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Use Cases Inside System Boundary -->
+        <!-- Student Use Cases -->
+        <mxCell id="uc_browse" value="Browse Course Catalogue" style="ellipse;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#3B82F6;strokeWidth=2;fontColor=#1E293B;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="80" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_enrol" value="Enrol in Course" style="ellipse;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#3B82F6;strokeWidth=2;fontColor=#1E293B;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="180" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_watch" value="Watch Lectures" style="ellipse;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#3B82F6;strokeWidth=2;fontColor=#1E293B;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="280" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_quiz" value="Attempt Quizzes" style="ellipse;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#3B82F6;strokeWidth=2;fontColor=#1E293B;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="380" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_assign" value="Submit Assignments" style="ellipse;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#3B82F6;strokeWidth=2;fontColor=#1E293B;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="470" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_cert" value="Download Completion Certificate" style="ellipse;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#3B82F6;strokeWidth=2;fontColor=#1E293B;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="560" width="190" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Sub / Dependent Use Cases -->
+        <mxCell id="uc_pay" value="Process Payment" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#78350F;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="275" width="170" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_coupon" value="Apply Discount Coupon" style="ellipse;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#16A34A;strokeWidth=1.5;dashed=1;fontColor=#14532D;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="150" width="170" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_forum" value="Ask Doubt in Discussion Forum" style="ellipse;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#16A34A;strokeWidth=1.5;dashed=1;fontColor=#14532D;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="390" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_verify" value="Verify Course Requirements" style="ellipse;whiteSpace=wrap;html=1;fillColor=#EEF2FF;strokeColor=#6366F1;strokeWidth=1.5;dashed=1;fontColor=#312E81;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="560" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Instructor Use Cases -->
+        <mxCell id="uc_upload" value="Upload Lecture Videos / Courses" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=2;fontColor=#064E3B;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="640" width="190" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_create_quiz" value="Create Quizzes" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=2;fontColor=#064E3B;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="640" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Admin Use Cases -->
+        <mxCell id="uc_users" value="Manage Users" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#B45309;strokeWidth=2;fontColor=#78350F;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="710" width="160" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_approve" value="Approve New Courses" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#B45309;strokeWidth=2;fontColor=#78350F;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="710" width="170" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- Actor Associations (Solid Lines) -->
+        <mxCell id="assoc_s1" edge="1" source="actor_student" target="uc_browse" parent="1" style="endArrow=none;html=1;strokeColor=#1D4ED8;strokeWidth=2;" />
+        <mxCell id="assoc_s2" edge="1" source="actor_student" target="uc_enrol" parent="1" style="endArrow=none;html=1;strokeColor=#1D4ED8;strokeWidth=2;" />
+        <mxCell id="assoc_s3" edge="1" source="actor_student" target="uc_watch" parent="1" style="endArrow=none;html=1;strokeColor=#1D4ED8;strokeWidth=2;" />
+        <mxCell id="assoc_s4" edge="1" source="actor_student" target="uc_quiz" parent="1" style="endArrow=none;html=1;strokeColor=#1D4ED8;strokeWidth=2;" />
+        <mxCell id="assoc_s5" edge="1" source="actor_student" target="uc_assign" parent="1" style="endArrow=none;html=1;strokeColor=#1D4ED8;strokeWidth=2;" />
+        <mxCell id="assoc_s6" edge="1" source="actor_student" target="uc_cert" parent="1" style="endArrow=none;html=1;strokeColor=#1D4ED8;strokeWidth=2;" />
+
+        <mxCell id="assoc_i1" edge="1" source="actor_instructor" target="uc_upload" parent="1" style="endArrow=none;html=1;strokeColor=#047857;strokeWidth=2;" />
+        <mxCell id="assoc_i2" edge="1" source="actor_instructor" target="uc_create_quiz" parent="1" style="endArrow=none;html=1;strokeColor=#047857;strokeWidth=2;" />
+
+        <mxCell id="assoc_a1" edge="1" source="actor_admin" target="uc_users" parent="1" style="endArrow=none;html=1;strokeColor=#B45309;strokeWidth=2;" />
+        <mxCell id="assoc_a2" edge="1" source="actor_admin" target="uc_approve" parent="1" style="endArrow=none;html=1;strokeColor=#B45309;strokeWidth=2;" />
+
+        <mxCell id="assoc_gw" edge="1" source="actor_payment_gw" target="uc_pay" parent="1" style="endArrow=none;html=1;strokeColor=#D97706;strokeWidth=2;" />
+
+        <!-- Include Relationships (Dashed Arrows) -->
+        <mxCell id="inc_pay" value="&amp;laquo;include&amp;raquo;&lt;br&gt;[paid courses]" edge="1" source="uc_enrol" target="uc_pay" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#D97706;strokeWidth=2;fontColor=#B45309;fontStyle=1;" />
+        <mxCell id="inc_verify" value="&amp;laquo;include&amp;raquo;" edge="1" source="uc_cert" target="uc_verify" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#4F46E5;strokeWidth=2;fontColor=#4338CA;fontStyle=1;" />
+
+        <!-- Extend Relationships (Dashed Arrows pointing to Base Use Case) -->
+        <mxCell id="ext_coupon" value="&amp;laquo;extend&amp;raquo;&lt;br&gt;[has promo code]" edge="1" source="uc_coupon" target="uc_enrol" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;" />
+        <mxCell id="ext_forum" value="&amp;laquo;extend&amp;raquo;&lt;br&gt;[posts question]" edge="1" source="uc_forum" target="uc_watch" parent="1" style="endArrow=open;dashed=1;html=1;strokeColor=#16A34A;strokeWidth=2;fontColor=#15803D;fontStyle=1;" />
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

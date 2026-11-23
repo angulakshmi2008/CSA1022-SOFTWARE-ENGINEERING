@@ -1,0 +1,73 @@
+```mermaid
+flowchart LR
+    %% Actors
+    subgraph Primary_Actors["Primary Actors"]
+        Student(["👤 Student"]):::actorNode
+        Instructor(["👤 Instructor"]):::actorNode
+        Admin(["👤 Administrator"]):::actorNode
+    end
+
+    %% System Boundary
+    subgraph E_Learning_Platform["System Boundary: E-Learning Platform"]
+        %% Student Use Cases
+        UC_Browse(["Browse Course Catalogue"]):::ucNode
+        UC_Enrol(["Enrol in Course"]):::ucNode
+        UC_Watch(["Watch Lectures"]):::ucNode
+        UC_Quiz(["Attempt Quizzes"]):::ucNode
+        UC_Assign(["Submit Assignments"]):::ucNode
+        UC_Cert(["Download Completion Certificate"]):::ucNode
+
+        %% Sub / Relation Use Cases
+        UC_Pay(["Process Payment"]):::payNode
+        UC_Coupon(["Apply Discount Coupon"]):::extNode
+        UC_Forum(["Ask Doubt in Discussion Forum"]):::extNode
+        UC_Verify(["Verify Course Requirements"]):::incNode
+
+        %% Instructor Use Cases
+        UC_Upload(["Upload Lecture Videos / Courses"]):::instrNode
+        UC_CreateQuiz(["Create Quizzes"]):::instrNode
+
+        %% Admin Use Cases
+        UC_ManageUsers(["Manage Users"]):::adminNode
+        UC_ApproveCourses(["Approve New Courses"]):::adminNode
+    end
+
+    %% External Supporting Actor
+    subgraph External_Systems["External System"]
+        Gateway["💳 <<actor>>\nExternal Payment Gateway"]:::extActorNode
+    end
+
+    %% Actor Associations
+    Student --- UC_Browse
+    Student --- UC_Enrol
+    Student --- UC_Watch
+    Student --- UC_Quiz
+    Student --- UC_Assign
+    Student --- UC_Cert
+
+    Instructor --- UC_Upload
+    Instructor --- UC_CreateQuiz
+
+    Admin --- UC_ManageUsers
+    Admin --- UC_ApproveCourses
+
+    Gateway --- UC_Pay
+
+    %% Include Relationships
+    UC_Enrol -. "<<include>>\n(for paid courses)" .-> UC_Pay
+    UC_Cert -. "<<include>>" .-> UC_Verify
+
+    %% Extend Relationships
+    UC_Coupon -. "<<extend>>\n[has coupon]" .-> UC_Enrol
+    UC_Forum -. "<<extend>>\n[posts doubt]" .-> UC_Watch
+
+    %% Styling
+    classDef actorNode fill:#DBEAFE,stroke:#1D4ED8,stroke-width:2px,color:#1E3A8A,font-weight:bold;
+    classDef extActorNode fill:#FEF3C7,stroke:#D97706,stroke-width:2px,color:#78350F,font-weight:bold;
+    classDef ucNode fill:#EFF6FF,stroke:#3B82F6,stroke-width:2px,color:#1E293B,font-weight:bold;
+    classDef payNode fill:#FEF3C7,stroke:#F59E0B,stroke-width:2px,color:#78350F,font-weight:bold;
+    classDef extNode fill:#F0FDF4,stroke:#16A34A,stroke-width:2px,stroke-dasharray: 5 5,color:#14532D;
+    classDef incNode fill:#EEF2FF,stroke:#6366F1,stroke-width:2px,stroke-dasharray: 5 5,color:#312E81;
+    classDef instrNode fill:#ECFDF5,stroke:#059669,stroke-width:2px,color:#064E3B,font-weight:bold;
+    classDef adminNode fill:#FFFBEB,stroke:#B45309,stroke-width:2px,color:#78350F,font-weight:bold;
+```
