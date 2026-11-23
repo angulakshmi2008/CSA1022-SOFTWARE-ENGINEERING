@@ -1,0 +1,51 @@
+```mermaid
+graph TD
+    %% Node Definitions
+    N1(["Node 1: Start"]):::startNode
+    N2{"Node 2: Predicate 1 (if)"}:::predicateNode
+    N3["Node 3: Then Action"]:::seqNode
+    N4["Node 4: Else Action"]:::seqNode
+    N5{"Node 5: Predicate 2 (while loop)"}:::predicateNode
+    N6{"Node 6: Predicate 3 (inner if)"}:::predicateNode
+    N7["Node 7: Inner Then"]:::seqNode
+    N8["Node 8: Inner Else"]:::seqNode
+    N9["Node 9: Loop Latch (Increment)"]:::seqNode
+    N10{"Node 10: Predicate 4 (post-loop if)"}:::predicateNode
+    N11["Node 11: Branch Action"]:::seqNode
+    N12{"Node 12: Predicate 5 (nested if)"}:::predicateNode
+    N13["Node 13: Join Node"]:::seqNode
+    N14["Node 14: Action Node"]:::seqNode
+    N15{"Node 15: Predicate 6 (final if)"}:::predicateNode
+    N16["Node 16: Action Node"]:::seqNode
+    N17(["Node 17: Exit"]):::exitNode
+
+    %% Directed Edges (Total: 22 Edges)
+    N1 --> N2
+    N2 -- "True" --> N3
+    N2 -- "False" --> N4
+    N3 --> N5
+    N4 --> N5
+    N5 -- "True (Loop)" --> N6
+    N5 -- "False (Exit Loop)" --> N10
+    N6 -- "True" --> N7
+    N6 -- "False" --> N8
+    N7 --> N9
+    N8 --> N9
+    N9 -- "Loop Back-Edge" --> N5
+    N10 -- "True" --> N11
+    N10 -- "False" --> N12
+    N11 --> N13
+    N12 -- "True" --> N13
+    N12 -- "False" --> N14
+    N13 --> N15
+    N14 --> N15
+    N15 -- "True" --> N16
+    N15 -- "False" --> N17
+    N16 --> N17
+
+    %% Styling Classes
+    classDef startNode fill:#10B981,stroke:#047857,stroke-width:2px,color:#FFFFFF,font-weight:bold;
+    classDef exitNode fill:#64748B,stroke:#1E293B,stroke-width:2px,color:#FFFFFF,font-weight:bold;
+    classDef predicateNode fill:#F59E0B,stroke:#B45309,stroke-width:2px,color:#1E293B,font-weight:bold;
+    classDef seqNode fill:#E0E7FF,stroke:#4F46E5,stroke-width:1.5px,color:#1E1B4B;
+```
